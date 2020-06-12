@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "726855172128",
+    "firebase_url": "https://khmer-music-library.firebaseio.com",
+    "project_id": "khmer-music-library",
+    "storage_bucket": "khmer-music-library.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726855172128:android:4e13b7923aea32f9777c45",
+        "android_client_info": {
+          "package_name": "com.example.khmer_music_library_player"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726855172128-oa0d1toa7p98vpvkq9hfbrtnd9b97qrj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCyCsV-gAPZ9vlhGqcFGBlZSsE7RpaY_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726855172128-oa0d1toa7p98vpvkq9hfbrtnd9b97qrj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726855172128:android:a271caec96ba62c6777c45",
+        "android_client_info": {
+          "package_name": "com.example.khmer_music_library_uploader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726855172128-oa0d1toa7p98vpvkq9hfbrtnd9b97qrj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCyCsV-gAPZ9vlhGqcFGBlZSsE7RpaY_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726855172128-oa0d1toa7p98vpvkq9hfbrtnd9b97qrj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
