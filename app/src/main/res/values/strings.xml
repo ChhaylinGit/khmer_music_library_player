@@ -13,4 +13,16 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
+
+    <!-- Nav menu text-->
+    <string name="album">អាល់ប៉ុម</string>
+    <string name="production">ផលិតកម្ម</string>
+    <string name="suggest_music">សំណូមពរបទចំរៀង</string>
+    <string name="music_love">ចំរៀងចូលចិត្ត</string>
+    <string name="comment">រិះគន់សស្ថាបនា និងកែលំអ</string>
+    <string name="theme">រចនាបទកម្មវិធី</string>
+    <string name="language">ប្តូរភាសា</string>
+    <string name="rate_app">អោយពិន្ទុកម្មវិធី</string>
+    <string name="version">ជំនាន់</string>
+
 </resources>
