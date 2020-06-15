@@ -25,5 +25,7 @@
     <string name="language">ប្តូរភាសា</string>
     <string name="rate_app">អោយពិន្ទុកម្មវិធី</string>
     <string name="version">ជំនាន់</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
