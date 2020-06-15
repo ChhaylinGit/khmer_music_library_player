@@ -9,11 +9,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
-    <string name="home_second">Home Second</string>
+    <string name="menu_home">បញ្ចីចំរៀងខ្មែរ</string>
 
     <!-- Nav menu text-->
     <string name="album">អាល់ប៉ុម</string>
@@ -27,5 +23,11 @@
     <string name="version">ជំនាន់</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: Bottom Navegation Text -->
+    <string name="music">ចំរៀង</string>
+    <string name="singer">អ្នកចំរៀង</string>
+    <string name="music_list">បញ្ចីចំរៀង</string>
+    <string name="download">ទាញយក</string>
 
 </resources>
