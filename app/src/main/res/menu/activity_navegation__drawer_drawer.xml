@@ -5,16 +5,40 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_album"
+            android:icon="@drawable/album"
+            android:title="@string/album"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_production"
+            android:icon="@drawable/production"
+            android:title="@string/production" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:icon="@drawable/suggest_music"
+            android:title="@string/suggest_music" />
+        <item
+            android:id="@+id/nav_music_love"
+            android:icon="@drawable/music_love"
+            android:title="@string/music_love" />
+        <item
+            android:id="@+id/nav_comment"
+            android:icon="@drawable/comment"
+            android:title="@string/comment" />
+        <item
+            android:id="@+id/nav_theme"
+            android:icon="@drawable/theme"
+            android:title="@string/theme" />
+        <item
+            android:id="@+id/nav_change_language"
+            android:icon="@drawable/language"
+            android:title="@string/language" />
+        <item
+            android:id="@+id/nav_rate_app"
+            android:icon="@drawable/rate_app"
+            android:title="@string/rate_app" />
+        <item
+            android:id="@+id/nav_version"
+            android:icon="@drawable/version"
+            android:title="@string/version" />
     </group>
 </menu>
