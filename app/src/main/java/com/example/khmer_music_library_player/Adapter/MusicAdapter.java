@@ -5,12 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.khmer_music_library_player.Models.GetMusics;
 import com.example.khmer_music_library_player.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,7 +38,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
     @Override
     public void onBindViewHolder(@NonNull MusicAdapterViewHolder holder, int position) {
         GetMusics getMusics = getMusicsList.get(position);
-        holder.textViewMusicTitle.setText("បទ: " + getMusics.getMusic());
+        holder.textViewMusicTitle.setText(getMusics.getMusic());
+
+        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/khmer-music-library.appspot.com/o/Singer%2FAlbums%2F%E1%9E%86%E1%9E%B6%E1%9E%99%20%E1%9E%9B%E1%9E%B8%E1%9E%93_1592320097999.jpg?alt=media&token=953c5b79-67ed-4265-83f7-a7e4185bcb7e").placeholder(R.drawable.version).into(holder.singerProfile);
         if(getMusics != null)
         {
             if(selectedPosition == position)
@@ -56,9 +60,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
 
     public class MusicAdapterViewHolder extends RecyclerView.ViewHolder{
         private TextView textViewMusicTitle;
+        private ImageView singerProfile;
         public MusicAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewMusicTitle = itemView.findViewById(R.id.textViewMusicTitle);
+            singerProfile = itemView.findViewById(R.id.imgSingerProfile);
         }
 
         public void bind(final GetMusics getMusics, final RecyclerItemClickListener itemClickListener) {

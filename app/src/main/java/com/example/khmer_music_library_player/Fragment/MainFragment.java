@@ -14,11 +14,16 @@ import android.view.ViewGroup;
 import com.example.khmer_music_library_player.Fragment.Tab1.MusicListFragment;
 import com.example.khmer_music_library_player.Fragment.Tab2.SingerFragment;
 import com.example.khmer_music_library_player.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainFragment extends Fragment {
 
     private BottomNavigationView bottomNavigationView;
+    private AdView adView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View  view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -27,10 +32,15 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+
+
     private void initView(View view)
     {
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        adView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
 
