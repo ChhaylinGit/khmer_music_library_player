@@ -5,12 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,7 +14,6 @@ import com.example.jean.jcplayer.model.JcAudio;
 import com.example.jean.jcplayer.view.JcPlayerView;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 
-import com.example.khmer_music_library_player.Models.CustomTypefaceSpan;
 import com.example.khmer_music_library_player.Models.GetMusics;
 import com.example.khmer_music_library_player.R;
 import com.google.firebase.database.DataSnapshot;

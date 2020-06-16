@@ -1,21 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/bottom_navigation_music"
         android:enabled="true"
         android:icon="@drawable/bottom_nav_music"
         android:title="@string/music"/>
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/bottom_navigation_singer"
         android:enabled="true"
         android:icon="@drawable/bottom_nav_singer"
         android:title="@string/singer"/>
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/bottom_navigation_music_lis"
         android:enabled="true"
         android:icon="@drawable/bottom_nav_music_list"
         android:title="@string/music_list"/>
     <item
-        android:id="@+id/page_4"
+        android:id="@+id/bottom_navigation_download"
         android:enabled="true"
         android:icon="@drawable/bottom_nav_download"
         android:title="@string/download"/>

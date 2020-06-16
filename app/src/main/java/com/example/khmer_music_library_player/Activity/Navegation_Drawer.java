@@ -1,13 +1,11 @@
 package com.example.khmer_music_library_player.Activity;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
 import android.view.Menu;
 
 import com.example.khmer_music_library_player.Models.CustomTypefaceSpan;
@@ -38,7 +36,6 @@ public class Navegation_Drawer extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
     }
 
     @Override
@@ -60,7 +57,6 @@ public class Navegation_Drawer extends AppCompatActivity {
         Menu m = navigationView.getMenu();
         for (int i=0;i<m.size();i++) {
             MenuItem mi = m.getItem(i);
-
             //for aapplying a font to subMenu ...
             SubMenu subMenu = mi.getSubMenu();
             if (subMenu!=null && subMenu.size() >0 ) {

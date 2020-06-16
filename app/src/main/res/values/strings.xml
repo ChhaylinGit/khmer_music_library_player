@@ -30,4 +30,12 @@
     <string name="music_list">បញ្ចីចំរៀង</string>
     <string name="download">ទាញយក</string>
 
+    <!-- TODO: Top Navegation Text -->
+    <string name="tab_new_music">ចំរៀងថ្មីៗ</string>
+    <string name="tab_popular_music">ចំរៀងពេញនិយម</string>
+    <string name="tab_now_music">ចំរៀងសម័យ</string>
+    <string name="tab_old_music">ចំរៀងជំនាន់ដើម</string>
+    <string name="tab_eng_music">ចំរៀងអង់គ្លស</string>
+    <string name="tab_remix_music">ចំរៀងRemix</string>
+
 </resources>

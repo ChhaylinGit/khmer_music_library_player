@@ -5,6 +5,5 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorGray">#F0F0F0</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBlack">#000000</color>
-
+    <color name="tabTextColor">#707070</color>
 </resources>
