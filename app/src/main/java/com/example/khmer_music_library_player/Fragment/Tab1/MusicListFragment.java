@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -61,7 +60,6 @@ public class MusicListFragment extends Fragment {
         adapter.addFragment(new EnglishMusicFragment(),getResources().getText(R.string.tab_eng_music).toString());
         adapter.addFragment(new RemixMusicFragment(),getResources().getText(R.string.tab_remix_music).toString());
         viewPager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

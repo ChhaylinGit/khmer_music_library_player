@@ -6,17 +6,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.Tab1.MusicListFragment"
     android:orientation="vertical">
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
+
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorGray"
-        app:tabTextColor="@color/tabTextColor"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabMode="scrollable"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabTextAppearance="@style/MineCustomTabText">
-    </com.google.android.material.tabs.TabLayout>
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGray"
+            app:tabTextColor="@color/tabTextColor"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabMode="scrollable"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabTextAppearance="@style/MineCustomTabText">
+        </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
