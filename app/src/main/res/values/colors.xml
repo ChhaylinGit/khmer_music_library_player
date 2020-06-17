@@ -6,4 +6,5 @@
     <color name="colorGray">#F0F0F0</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="tabTextColor">#707070</color>
+    <color name="colorBlack">#000000</color>
 </resources>

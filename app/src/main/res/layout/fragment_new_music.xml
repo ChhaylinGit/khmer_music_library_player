@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     tools:context=".Fragment.Tab1.NewMusicFragment">
     <androidx.recyclerview.widget.RecyclerView
@@ -15,5 +16,18 @@
         android:id="@+id/jcPlayerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        app:seek_bar_color="@color/colorPrimary"
+        app:text_audio_title_color="@color/colorPrimary"
+        app:text_audio_duration_color="@color/colorPrimary"
+        app:text_audio_current_duration_color="@color/colorPrimary"
+        app:repeat_one_icon_color="@color/colorPrimary"
+        app:repeat_icon_color="@color/colorPrimary"
+        app:random_icon_color="@color/colorPrimary"
+        app:progress_color="@color/colorPrimary"
+        app:previous_icon_color="@color/colorPrimary"
+        app:play_icon_color="@color/colorPrimary"
+        app:pause_icon_color="@color/colorPrimary"
+        app:next_icon_color="@color/colorPrimary"
+        android:outlineSpotShadowColor="@color/colorPrimary"/>
 </RelativeLayout>

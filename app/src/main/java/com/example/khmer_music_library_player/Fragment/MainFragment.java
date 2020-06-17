@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -28,7 +29,8 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View  view = inflater.inflate(R.layout.fragment_main, container, false);
         initView(view);
-        openFragment(new MusicListFragment());
+//        openFragment(new MusicListFragment());
+        loadFragment(new MusicListFragment());
         return view;
     }
 
@@ -47,16 +49,17 @@ public class MainFragment extends Fragment {
         private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
                 switch (item.getItemId())
                 {
                     case R.id.bottom_navigation_music:
-                        openFragment(new MusicListFragment());
-                        return  true;
+                        fragment = new MusicListFragment();
+                        break;
                     case R.id.bottom_navigation_singer:
-                        openFragment(new SingerFragment());
-                        return  true;
+                        fragment = new SingerFragment();
+                        break;
                 }
-                return false;
+                return loadFragment(fragment);
             }
         };
 
@@ -67,6 +70,17 @@ public class MainFragment extends Fragment {
         transaction.commit();
     }
 
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.musicContainer, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
 
 
 }
