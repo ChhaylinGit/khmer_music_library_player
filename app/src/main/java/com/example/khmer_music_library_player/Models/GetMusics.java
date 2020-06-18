@@ -1,40 +1,30 @@
 package com.example.khmer_music_library_player.Models;
 
 public class GetMusics {
-    public String productionID;
-    public String albumID;
+    public String musicTitle;
     public String singerID;
-    public String musicTypeID;
-    public String music;
+    public String singerName;
+    public String singerImageUrl;
     public String duration;
-    public String uri;
+    public String mp3Uri;
 
     public GetMusics(){}
 
-    public GetMusics(String productionID, String albumID, String singerID, String musicTypeID, String music, String duration, String uri) {
-        this.productionID = productionID;
-        this.albumID = albumID;
+    public GetMusics(String musicTitle, String singerID, String singerName, String singerImageUrl, String duration, String mp3Uri) {
+        this.musicTitle = musicTitle;
         this.singerID = singerID;
-        this.musicTypeID = musicTypeID;
-        this.music = music;
+        this.singerName = singerName;
+        this.singerImageUrl = singerImageUrl;
         this.duration = duration;
-        this.uri = uri;
+        this.mp3Uri = mp3Uri;
     }
 
-    public String getProductionID() {
-        return productionID;
+    public String getMusicTitle() {
+        return musicTitle;
     }
 
-    public void setProductionID(String productionID) {
-        this.productionID = productionID;
-    }
-
-    public String getAlbumID() {
-        return albumID;
-    }
-
-    public void setAlbumID(String albumID) {
-        this.albumID = albumID;
+    public void setMusicTitle(String musicTitle) {
+        this.musicTitle = musicTitle;
     }
 
     public String getSingerID() {
@@ -45,20 +35,20 @@ public class GetMusics {
         this.singerID = singerID;
     }
 
-    public String getMusicTypeID() {
-        return musicTypeID;
+    public String getSingerName() {
+        return singerName;
     }
 
-    public void setMusicTypeID(String musicTypeID) {
-        this.musicTypeID = musicTypeID;
+    public void setSingerName(String singerName) {
+        this.singerName = singerName;
     }
 
-    public String getMusic() {
-        return music;
+    public String getSingerImageUrl() {
+        return singerImageUrl;
     }
 
-    public void setMusic(String music) {
-        this.music = music;
+    public void setSingerImageUrl(String singerImageUrl) {
+        this.singerImageUrl = singerImageUrl;
     }
 
     public String getDuration() {
@@ -69,11 +59,23 @@ public class GetMusics {
         this.duration = duration;
     }
 
-    public String getUri() {
-        return uri;
+    public String getMp3Uri() {
+        return mp3Uri;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setMp3Uri(String mp3Uri) {
+        this.mp3Uri = mp3Uri;
+    }
+
+    @Override
+    public String toString() {
+        return "GetMusics{" +
+                "musicTitle='" + musicTitle + '\'' +
+                ", singerID='" + singerID + '\'' +
+                ", singerName='" + singerName + '\'' +
+                ", singerImageUrl='" + singerImageUrl + '\'' +
+                ", duration='" + duration + '\'' +
+                ", mp3Uri='" + mp3Uri + '\'' +
+                '}';
     }
 }

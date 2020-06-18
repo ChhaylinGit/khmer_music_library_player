@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.khmer_music_library_player.Fragment.Tab1.MusicListFragment;
+import com.example.khmer_music_library_player.Fragment.Tab1.NewMusicFragment;
 import com.example.khmer_music_library_player.Fragment.Tab2.SingerFragment;
 import com.example.khmer_music_library_player.R;
 import com.google.android.gms.ads.AdRequest;
@@ -30,7 +31,7 @@ public class MainFragment extends Fragment {
         View  view = inflater.inflate(R.layout.fragment_main, container, false);
         initView(view);
 //        openFragment(new MusicListFragment());
-        loadFragment(new MusicListFragment());
+        loadFragment(new NewMusicFragment());
         return view;
     }
 
@@ -53,7 +54,7 @@ public class MainFragment extends Fragment {
                 switch (item.getItemId())
                 {
                     case R.id.bottom_navigation_music:
-                        fragment = new MusicListFragment();
+                        fragment = new NewMusicFragment();
                         break;
                     case R.id.bottom_navigation_singer:
                         fragment = new SingerFragment();

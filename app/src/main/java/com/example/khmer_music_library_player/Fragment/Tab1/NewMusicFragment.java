@@ -31,7 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 
 public class NewMusicFragment extends Fragment {
@@ -39,19 +41,20 @@ public class NewMusicFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Boolean checkIn =false;
-    private List<GetMusics> getMusicsList;
+    private List<GetMusics> getMusicsList =new ArrayList<>();
     private MusicAdapter musicAdapter;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference,databaseReferenceMusic;
     private ValueEventListener valueEventListener;
     private JcPlayerView jcPlayerView;
     private ArrayList<JcAudio> jcAudiosList = new ArrayList<>();
     private int currentIndex;
-
+    public List<String> singerKeyList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
         initView(view);
+        getMusicsList();
 
         return view;
     }
@@ -61,47 +64,45 @@ public class NewMusicFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void  initView(View view)
+    public void getMusicsList()
     {
-        recyclerView = view.findViewById(R.id.recyclerViewMusic);
-        progressBar = view.findViewById(R.id.progressBarPlayer);
-        jcPlayerView = view.findViewById(R.id.jcPlayerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        getMusicsList = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Music").child("-M93w3-Vz3l4jTCUktkb").child("-M93wGgy5cFejwlFazHM").child("-M93wTsrYrj1KcM6V4oo").child("-M93wJHs-4CHdVP5PVWh");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Music");
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 getMusicsList.clear();
                 for (DataSnapshot dss : dataSnapshot.getChildren()){
-                    GetMusics getMusics = dss.getValue(GetMusics.class);
-//                  getMusics.setMusicKey(dss.getKey());
-                    currentIndex = 0;
+                    for(DataSnapshot singerSnapshot : dataSnapshot.child(dss.getKey()).getChildren()){
+                        GetMusics getMusics = singerSnapshot.getValue(GetMusics.class);
+                        getMusicsList.add(getMusics);
+                        currentIndex = 0;
+                        checkIn = true;
+                        jcAudiosList.add(JcAudio.createFromURL(getMusics.getMusicTitle(),getMusics.getMp3Uri()));
+                        musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
+                            @Override
+                            public void onClickListener(GetMusics getMusics, int position) {
+                                jcPlayerView.setVisibility(View.VISIBLE);
+                                changeSelectedSong(position);
+                                jcPlayerView.playAudio(jcAudiosList.get(position));
+                                jcPlayerView.createNotification();
+                            }
+                        });
+                        recyclerView.setAdapter(musicAdapter);
+                        musicAdapter.setSelectedPosition(0);
+                        musicAdapter.notifyDataSetChanged();
 
-                    getMusicsList.add(getMusics);
-                    checkIn = true;
-                    jcAudiosList.add(JcAudio.createFromURL(getMusics.getMusic(),getMusics.uri));
-                    Log.e("ooooooooo",getMusics.getMusic()+"");
-                }
-                musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
-                    @Override
-                    public void onClickListener(GetMusics getMusics, int position) {
-                        changeSelectedSong(position);
-                        jcPlayerView.playAudio(jcAudiosList.get(position));
-                        jcPlayerView.createNotification();
-                    }
-                });
-                recyclerView.setAdapter(musicAdapter);
-                musicAdapter.setSelectedPosition(0);
-                recyclerView.setAdapter(musicAdapter);
-                musicAdapter.notifyDataSetChanged();
-                if(checkIn)
-                {
-                    jcPlayerView.initPlaylist(jcAudiosList,null);
-                }else{
-                    Toast.makeText(getActivity(), "There are no musid", Toast.LENGTH_SHORT).show();
-                }
+                        if(checkIn)
+                        {
+                            jcPlayerView.initPlaylist(jcAudiosList,null);
+                        }else{
+                            Toast.makeText(getActivity(), "There are no musid", Toast.LENGTH_SHORT).show();
+                        }
+                                singerKeyList.add(singerSnapshot.getKey());
+                            }
+                        }
+//                Random rand = new Random();
+//                String random = singerKeyList.get(rand.nextInt(singerKeyList.size()));
+//                Log.e("mmmmmmmmmmm",random);
             }
 
             @Override
@@ -109,6 +110,55 @@ public class NewMusicFragment extends Fragment {
 
             }
         });
+    }
+
+    private void  initView(View view)
+    {
+        recyclerView = view.findViewById(R.id.recyclerViewMusic);
+        progressBar = view.findViewById(R.id.progressBarPlayer);
+        jcPlayerView = view.findViewById(R.id.jcPlayerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        databaseReference = FirebaseDatabase.getInstance().getReference("Music").child("-MA28JXJggwCR4Pvahpk");
+//        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                getMusicsList.clear();
+//                for (DataSnapshot dss : dataSnapshot.getChildren()){
+//                    GetMusics getMusics = dss.getValue(GetMusics.class);
+////                  getMusics.setMusicKey(dss.getKey());
+//                    currentIndex = 0;
+//
+//                    getMusicsList.add(getMusics);
+//                    checkIn = true;
+//                    jcAudiosList.add(JcAudio.createFromURL(getMusics.getMusicTitle(),getMusics.getMp3Uri()));
+//                }
+//                musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
+//                    @Override
+//                    public void onClickListener(GetMusics getMusics, int position) {
+//                        jcPlayerView.setVisibility(View.VISIBLE);
+//                        changeSelectedSong(position);
+//                        jcPlayerView.playAudio(jcAudiosList.get(position));
+//                        jcPlayerView.createNotification();
+//                    }
+//                });
+//                recyclerView.setAdapter(musicAdapter);
+//                musicAdapter.setSelectedPosition(0);
+//                recyclerView.setAdapter(musicAdapter);
+//                musicAdapter.notifyDataSetChanged();
+//                if(checkIn)
+//                {
+//                    jcPlayerView.initPlaylist(jcAudiosList,null);
+//                }else{
+//                    Toast.makeText(getActivity(), "There are no musid", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
     }
     public void changeSelectedSong(int index)
     {

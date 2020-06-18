@@ -38,9 +38,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
     @Override
     public void onBindViewHolder(@NonNull MusicAdapterViewHolder holder, int position) {
         GetMusics getMusics = getMusicsList.get(position);
-        holder.textViewMusicTitle.setText(getMusics.getMusic());
+        holder.textViewMusicTitle.setText(getMusics.getMusicTitle());
+        holder.textViewSinger.setText(context.getResources().getString(R.string.sing_by)+" "+getMusics.getSingerName());
+        if(getMusics.getSingerImageUrl() != null)
+        {
+            Picasso.get().load(getMusics.getSingerImageUrl()).placeholder(R.drawable.ic_image_black_24dp).into(holder.singerProfile);
+        }else{Picasso.get().load(R.drawable.ic_image_black_24dp).placeholder(R.drawable.ic_image_black_24dp).into(holder.singerProfile);}
 
-        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/khmer-music-library.appspot.com/o/Singer%2FAlbums%2F%E1%9E%86%E1%9E%B6%E1%9E%99%20%E1%9E%9B%E1%9E%B8%E1%9E%93_1592320097999.jpg?alt=media&token=953c5b79-67ed-4265-83f7-a7e4185bcb7e").placeholder(R.drawable.version).into(holder.singerProfile);
         if(getMusics != null)
         {
             if(selectedPosition == position)
@@ -59,11 +63,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
 
 
     public class MusicAdapterViewHolder extends RecyclerView.ViewHolder{
-        private TextView textViewMusicTitle;
+        private TextView textViewMusicTitle,textViewSinger;
         private ImageView singerProfile;
         public MusicAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewMusicTitle = itemView.findViewById(R.id.textViewMusicTitle);
+            textViewSinger =itemView.findViewById(R.id.textViewSinger);
             singerProfile = itemView.findViewById(R.id.imgSingerProfile);
         }
 

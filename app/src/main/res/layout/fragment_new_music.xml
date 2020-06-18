@@ -29,5 +29,6 @@
         app:play_icon_color="@color/colorPrimary"
         app:pause_icon_color="@color/colorPrimary"
         app:next_icon_color="@color/colorPrimary"
-        android:outlineSpotShadowColor="@color/colorPrimary"/>
+        android:outlineSpotShadowColor="@color/colorPrimary"
+        android:visibility="gone"/>
 </RelativeLayout>

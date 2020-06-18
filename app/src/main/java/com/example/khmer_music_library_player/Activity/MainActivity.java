@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                     getMusicsList.add(getMusics);
                     checkIn = true;
-                    jcAudiosList.add(JcAudio.createFromURL(getMusics.getMusic(),getMusics.uri));
-                    Log.e("ooooooooo",getMusics.getMusic()+"");
+                    jcAudiosList.add(JcAudio.createFromURL(getMusics.getMusicTitle(),getMusics.getMp3Uri()));
                 }
                 musicAdapter = new MusicAdapter(getApplicationContext(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
                     @Override

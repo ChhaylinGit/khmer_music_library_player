@@ -42,7 +42,7 @@ public class MusicListAdapter extends BaseAdapter {
         GetMusics getMusics = getMusicsList.get(i);
         TextView textViewMusicTitle = view1.findViewById(R.id.textViewMusicTitle);
         ImageView imgSingerProfile = view1.findViewById(R.id.imgSingerProfile);
-        textViewMusicTitle.setText(getMusics.getMusic());
+        textViewMusicTitle.setText(getMusics.getMusicTitle());
         Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/khmer-music-library.appspot.com/o/Singer%2FAlbums%2F%E1%9E%86%E1%9E%B6%E1%9E%99%20%E1%9E%9B%E1%9E%B8%E1%9E%93_1592320097999.jpg?alt=media&token=953c5b79-67ed-4265-83f7-a7e4185bcb7e").placeholder(R.drawable.version).into(imgSingerProfile);
         return view1;
     }
