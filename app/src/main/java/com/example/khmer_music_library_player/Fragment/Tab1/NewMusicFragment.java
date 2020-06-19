@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.example.jean.jcplayer.model.JcAudio;
 import com.example.jean.jcplayer.view.JcPlayerView;
 import com.example.khmer_music_library_player.Activity.MainActivity;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
+import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.GetMusics;
 import com.example.khmer_music_library_player.R;
 import com.google.android.gms.ads.AdRequest;
@@ -31,9 +34,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 
 public class NewMusicFragment extends Fragment {
@@ -43,19 +48,17 @@ public class NewMusicFragment extends Fragment {
     private Boolean checkIn =false;
     private List<GetMusics> getMusicsList =new ArrayList<>();
     private MusicAdapter musicAdapter;
-    private DatabaseReference databaseReference,databaseReferenceMusic;
+    private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
     private JcPlayerView jcPlayerView;
     private ArrayList<JcAudio> jcAudiosList = new ArrayList<>();
     private int currentIndex;
-    public List<String> singerKeyList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
         initView(view);
         getMusicsList();
-
         return view;
     }
 
@@ -66,43 +69,44 @@ public class NewMusicFragment extends Fragment {
 
     public void getMusicsList()
     {
-        databaseReference = FirebaseDatabase.getInstance().getReference("Music");
+        databaseReference = FirebaseDatabase.getInstance().getReference(ConstantField.DATABASE_PATH_MUSIC);
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 getMusicsList.clear();
-                for (DataSnapshot dss : dataSnapshot.getChildren()){
-                    for(DataSnapshot singerSnapshot : dataSnapshot.child(dss.getKey()).getChildren()){
+                for (DataSnapshot dss : dataSnapshot.getChildren())
+                {
+                    for(DataSnapshot singerSnapshot : dataSnapshot.child(dss.getKey()).getChildren())
+                    {
                         GetMusics getMusics = singerSnapshot.getValue(GetMusics.class);
                         getMusicsList.add(getMusics);
-                        currentIndex = 0;
-                        checkIn = true;
-                        jcAudiosList.add(JcAudio.createFromURL(getMusics.getMusicTitle(),getMusics.getMp3Uri()));
-                        musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
-                            @Override
-                            public void onClickListener(GetMusics getMusics, int position) {
-                                jcPlayerView.setVisibility(View.VISIBLE);
-                                changeSelectedSong(position);
-                                jcPlayerView.playAudio(jcAudiosList.get(position));
-                                jcPlayerView.createNotification();
-                            }
-                        });
-                        recyclerView.setAdapter(musicAdapter);
-                        musicAdapter.setSelectedPosition(0);
-                        musicAdapter.notifyDataSetChanged();
-
-                        if(checkIn)
-                        {
-                            jcPlayerView.initPlaylist(jcAudiosList,null);
-                        }else{
-                            Toast.makeText(getActivity(), "There are no musid", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                Collections.shuffle(getMusicsList); // Random item in list
+                for (GetMusics str : getMusicsList)
+                {
+                    currentIndex = 0;
+                    checkIn = true;
+                    jcAudiosList.add(JcAudio.createFromURL(str.getMusicTitle(),str.getMp3Uri()));
+                    musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
+                        @Override
+                        public void onClickListener(GetMusics getMusics, int position) {
+                            jcPlayerView.setVisibility(View.VISIBLE);
+                            changeSelectedSong(position);
+                            jcPlayerView.playAudio(jcAudiosList.get(position));
+                            jcPlayerView.createNotification();
                         }
-                                singerKeyList.add(singerSnapshot.getKey());
-                            }
-                        }
-//                Random rand = new Random();
-//                String random = singerKeyList.get(rand.nextInt(singerKeyList.size()));
-//                Log.e("mmmmmmmmmmm",random);
+                    });
+                    recyclerView.setAdapter(musicAdapter);
+                    musicAdapter.setSelectedPosition(0);
+                    musicAdapter.notifyDataSetChanged();
+                    if(checkIn)
+                    {
+                        jcPlayerView.initPlaylist(jcAudiosList,null);
+                    }else{
+                        Toast.makeText(getActivity(), "There are no musid", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
