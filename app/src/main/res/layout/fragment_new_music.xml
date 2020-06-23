@@ -4,14 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     tools:context=".Fragment.Tab1.NewMusicFragment">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMusic"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/jcPlayerView">
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMusic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+        </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:id="@+id/linearlayoutWaitLoadMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:theme="@style/ProgressBarLoadMusic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading_music"
+                android:textSize="15sp"
+                android:fontFamily="@font/khmer_os_battambang"/>
+        </LinearLayout>
+    </FrameLayout>
+
     <com.example.jean.jcplayer.view.JcPlayerView
         android:id="@+id/jcPlayerView"
         android:layout_width="match_parent"

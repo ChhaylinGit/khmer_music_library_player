@@ -8,10 +8,11 @@
     <string name="nav_header_subtitle">មាតិកា</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="app_version">ជំនាន់ទី</string>
 
     <string name="menu_home">បញ្ចីចំរៀងខ្មែរ</string>
     <string name="sing_by">ច្រៀងដោយ៖</string>
-
+    <string name="loading_music">កុំពុងទាញយកបទចំរៀង...</string>
 
     <!-- Nav menu text-->
     <string name="album">អាល់ប៉ុម</string>
@@ -39,5 +40,9 @@
     <string name="tab_old_music">ចំរៀងជំនាន់ដើម</string>
     <string name="tab_eng_music">ចំរៀងអង់គ្លស</string>
     <string name="tab_remix_music">ចំរៀងRemix</string>
+
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

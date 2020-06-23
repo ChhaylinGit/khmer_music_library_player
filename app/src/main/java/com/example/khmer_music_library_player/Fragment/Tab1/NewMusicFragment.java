@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class NewMusicFragment extends Fragment {
     private JcPlayerView jcPlayerView;
     private ArrayList<JcAudio> jcAudiosList = new ArrayList<>();
     private int currentIndex;
+    private LinearLayout linearLayoutWaitLoadMusic;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +102,8 @@ public class NewMusicFragment extends Fragment {
                     recyclerView.setAdapter(musicAdapter);
                     musicAdapter.setSelectedPosition(0);
                     musicAdapter.notifyDataSetChanged();
+                    recyclerView.setVisibility(View.VISIBLE);
+                    linearLayoutWaitLoadMusic.setVisibility(View.GONE);
                     if(checkIn)
                     {
                         jcPlayerView.initPlaylist(jcAudiosList,null);
@@ -121,8 +125,10 @@ public class NewMusicFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewMusic);
         progressBar = view.findViewById(R.id.progressBarPlayer);
         jcPlayerView = view.findViewById(R.id.jcPlayerView);
+        linearLayoutWaitLoadMusic = view.findViewById(R.id.linearlayoutWaitLoadMusic);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 //        databaseReference = FirebaseDatabase.getInstance().getReference("Music").child("-MA28JXJggwCR4Pvahpk");
 //        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
 //            @Override

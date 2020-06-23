@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_main_fragment"
         android:name="com.example.khmer_music_library_player.Fragment.MainFragment"
-        android:label="@string/menu_home"
+        android:label="@string/title_activity_navegation__drawer"
         tools:layout="@layout/fragment_main">
 
 <!--        <action-->
