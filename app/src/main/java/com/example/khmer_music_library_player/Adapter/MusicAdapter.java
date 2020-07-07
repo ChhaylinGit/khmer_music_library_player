@@ -40,7 +40,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
         GetMusics getMusics = getMusicsList.get(position);
         holder.textViewMusicTitle.setText(getMusics.getMusicTitle());
         holder.textViewSinger.setText(context.getResources().getString(R.string.sing_by)+" "+getMusics.getSingerName());
-        holder.textViewMusicDuration.setText(Setting.formateMilliSeccond(Long.parseLong(getMusics.getDuration())));
+        holder.textViewMusicDuration.setText(getMusics.getDuration());
         if(getMusics.getSingerImageUrl() != null)
         {
             Picasso.get().load(getMusics.getSingerImageUrl()).placeholder(R.drawable.ic_image_black_24dp).into(holder.singerProfile);
