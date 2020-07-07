@@ -1,5 +1,6 @@
 package com.example.khmer_music_library_player.Fragment.Tab1;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.example.jean.jcplayer.model.JcAudio;
 import com.example.jean.jcplayer.view.JcPlayerView;
 import com.example.khmer_music_library_player.Activity.MainActivity;
+import com.example.khmer_music_library_player.Activity.PlayerActivity;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.GetMusics;
@@ -97,6 +99,8 @@ public class NewMusicFragment extends Fragment {
                             changeSelectedSong(position);
                             jcPlayerView.playAudio(jcAudiosList.get(position));
                             jcPlayerView.createNotification();
+
+//                            getActivity().startActivity(new Intent(getActivity(),new PlayerActivity().getClass()));
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
