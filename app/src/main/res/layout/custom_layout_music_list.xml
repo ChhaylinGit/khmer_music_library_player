@@ -64,7 +64,8 @@
                     android:layout_height="30dp"
                     android:src="@drawable/playing_bar"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <TextView

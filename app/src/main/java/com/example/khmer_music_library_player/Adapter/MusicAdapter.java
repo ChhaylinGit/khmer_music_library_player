@@ -1,5 +1,4 @@
 package com.example.khmer_music_library_player.Adapter;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.khmer_music_library_player.Models.GetMusics;
 import com.example.khmer_music_library_player.R;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapterViewHolder> {
@@ -25,6 +21,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
     private RecyclerItemClickListener itemClickListener;
     private int selectedPosition;
     int index=-1;
+    public View itemview;
+    MusicAdapterViewHolder myholder;
+
+    private int focusedItem = 0;
 
     public MusicAdapter(Context context, List<GetMusics> getMusicsList, RecyclerItemClickListener itemClickListener) {
         this.context = context;
@@ -41,11 +41,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
 
     @Override
     public void onBindViewHolder(@NonNull MusicAdapterViewHolder holder, final int position) {
+        myholder = holder;
         final GetMusics getMusics = getMusicsList.get(position);
         holder.textViewMusicTitle.setText(getMusics.getMusicTitle());
         holder.textViewSinger.setText(context.getResources().getString(R.string.sing_by)+" "+getMusics.getSingerName());
         holder.textViewMusicDuration.setText(getMusics.getDuration());
-        Glide.with(context).load(R.drawable.playing_bar).into(holder.imageViewGif);
         if(getMusics.getSingerImageUrl() != null)
         {
             Picasso.get().load(getMusics.getSingerImageUrl()).placeholder(R.drawable.ic_image_black_24dp).into(holder.singerProfile);
@@ -60,10 +60,20 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
         });
         if(index == position)
         {
-            holder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            myholder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            myholder.textViewSinger.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            Glide.with(context).load(R.drawable.playing_bar).into(holder.imageViewGif);
+            myholder.imageViewGif.setVisibility(View.VISIBLE);
         }else{
-            holder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            myholder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            myholder.imageViewGif.setVisibility(View.GONE);
         }
+    }
+
+    public void  setIndex(int position)
+    {
+        index = position;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -71,7 +81,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
         Log.e("oooooooosize",getMusicsList.size()+"");
         return getMusicsList.size();
     }
-
 
     public class MusicAdapterViewHolder extends RecyclerView.ViewHolder{
         private TextView textViewMusicTitle,textViewSinger,textViewMusicDuration;
@@ -100,7 +109,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
                         Toast.makeText(context, "Not Equal", Toast.LENGTH_SHORT).show();
                     }
                 }
-
             });
         }
     }
