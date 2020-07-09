@@ -83,6 +83,7 @@ public class NewMusicFragment extends Fragment implements Playable {
     private int playingPosition=0;
     private NotificationManager notificationManager;
 
+
     private int notifposition = 0;
     private boolean isPlaying = false;
 
@@ -156,6 +157,7 @@ public class NewMusicFragment extends Fragment implements Playable {
         textViewEndDuration = view.findViewById(R.id.textViewEndDuration);
         textViewMusicTitle = view.findViewById(R.id.textViewMusicTitle);
         textViewSinger = view.findViewById(R.id.textViewSinger);
+        progressBar = view.findViewById(R.id.progressBarPlayer);
         linearLayoutWaitLoadMusic = view.findViewById(R.id.linearlayoutWaitLoadMusic);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -241,6 +243,7 @@ public class NewMusicFragment extends Fragment implements Playable {
                 mediaPlayer.start();
                 btnPlay.setImageResource(R.drawable.pause_96px);
                 musicAdapter.setIndex(position,true);
+
             }
         });
 
@@ -248,13 +251,19 @@ public class NewMusicFragment extends Fragment implements Playable {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 int curSongPoition = position;
+                Toast.makeText(getActivity(), "st", Toast.LENGTH_SHORT).show();
                 if (curSongPoition < getMusicsList.size() - 1) {
+                    Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
                     curSongPoition++;
+                    playingPosition = curSongPoition;
                     initPlayer(curSongPoition);
+                    onTrackNext();
                 } else {
+                    Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
                     curSongPoition = 0;
                     initPlayer(curSongPoition);
                 }
+
             }
         });
 
@@ -362,7 +371,7 @@ public class NewMusicFragment extends Fragment implements Playable {
 
     @Override
     public void onTrackPlay() {
-        Toast.makeText(getActivity(), getMusicsList.size()+"", Toast.LENGTH_SHORT).show();
+
         CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
                 R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
         isPlaying = true;

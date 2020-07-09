@@ -36,7 +36,7 @@ public class CreateNotification {
     public static Notification notification;
 
     public static void createNotification(Context context, GetMusics track, int playbutton, int pos, int size){
-        Toast.makeText(context, pos+"", Toast.LENGTH_SHORT).show();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
 
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);

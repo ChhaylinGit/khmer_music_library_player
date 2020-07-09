@@ -23,7 +23,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
     private int index=-1;
     private boolean _showPlayBar;
 
-
     public MusicAdapter(Context context, List<GetMusics> getMusicsList, RecyclerItemClickListener itemClickListener) {
         this.context = context;
         this.getMusicsList = getMusicsList;
@@ -50,6 +49,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 itemClickListener.onClickListener(getMusics,position);
                 index = position;
                 notifyDataSetChanged();

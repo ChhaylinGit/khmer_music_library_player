@@ -52,6 +52,9 @@
     <style name="ProgressBarLoadMusic" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@color/black_overlay</item>
     </style>
+    <style name="ProgressBarLoading" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 
     <style name="MyProgressBar" parent="Theme.AppCompat.Light">
         <item name="colorAccent">#0091ea</item>

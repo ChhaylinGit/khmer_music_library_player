@@ -80,7 +80,6 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/default_image"
                 android:scaleType="fitXY"/>
-
             <LinearLayout
                 android:id="@+id/linearlayoutTitle"
                 android:layout_width="wrap_content"
@@ -124,18 +123,30 @@
                     android:layout_height="40dp"
                     android:src="@drawable/previous_96"
                     android:layout_marginRight="5dp"/>
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    app:fabSize="mini"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    android:backgroundTintMode="screen"
-                    android:backgroundTint="@color/colorGray"
-                    android:clickable="true"
-                    android:id="@+id/btnPlay"
+                <FrameLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/play_96px"
-                    android:layout_marginRight="5dp"/>
+                    android:layout_marginRight="5dp">
+                    <ProgressBar
+                        android:id="@+id/progressBarPlayer"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:indeterminateTint="@color/colorPrimary"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        app:fabSize="mini"
+                        app:borderWidth="0dp"
+                        app:elevation="0dp"
+                        android:backgroundTintMode="screen"
+                        android:backgroundTint="@color/colorGray"
+                        android:clickable="true"
+                        android:id="@+id/btnPlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/play_96px"/>
+                </FrameLayout>
+
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     app:fabSize="mini"
                     app:borderWidth="0dp"
