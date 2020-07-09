@@ -20,11 +20,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
     List<GetMusics> getMusicsList;
     private RecyclerItemClickListener itemClickListener;
     private int selectedPosition;
-    int index=-1;
-    public View itemview;
-    MusicAdapterViewHolder myholder;
+    private int index=-1;
+    private boolean _showPlayBar;
 
-    private int focusedItem = 0;
 
     public MusicAdapter(Context context, List<GetMusics> getMusicsList, RecyclerItemClickListener itemClickListener) {
         this.context = context;
@@ -41,7 +39,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
 
     @Override
     public void onBindViewHolder(@NonNull MusicAdapterViewHolder holder, final int position) {
-        myholder = holder;
         final GetMusics getMusics = getMusicsList.get(position);
         holder.textViewMusicTitle.setText(getMusics.getMusicTitle());
         holder.textViewSinger.setText(context.getResources().getString(R.string.sing_by)+" "+getMusics.getSingerName());
@@ -60,18 +57,25 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
         });
         if(index == position)
         {
-            myholder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            myholder.textViewSinger.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            Glide.with(context).load(R.drawable.playing_bar).into(holder.imageViewGif);
-            myholder.imageViewGif.setVisibility(View.VISIBLE);
+            holder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.textViewSinger.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            if(_showPlayBar)
+            {
+                holder.imageViewGif.setVisibility(View.VISIBLE);
+                Glide.with(context).load(R.drawable.playing_bar).into(holder.imageViewGif);
+            }else{
+                    holder.imageViewGif.setVisibility(View.GONE);
+                }
         }else{
-            myholder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorBlack));
-            myholder.imageViewGif.setVisibility(View.GONE);
+            holder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            holder.textViewSinger.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            holder.imageViewGif.setVisibility(View.GONE);
         }
     }
 
-    public void  setIndex(int position)
+    public void  setIndex(int position,boolean showPlayBar)
     {
+        _showPlayBar = showPlayBar;
         index = position;
         notifyDataSetChanged();
     }

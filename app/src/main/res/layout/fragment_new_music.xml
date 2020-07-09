@@ -112,26 +112,41 @@
                 android:orientation="horizontal"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true">
-                <Button
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    app:fabSize="mini"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp"
+                    android:backgroundTintMode="screen"
+                    android:backgroundTint="@color/colorGray"
                     android:clickable="true"
                     android:id="@+id/btnPrevious"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/previous_96"
+                    android:src="@drawable/previous_96"
                     android:layout_marginRight="5dp"/>
-                <Button
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    app:fabSize="mini"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp"
+                    android:backgroundTintMode="screen"
+                    android:backgroundTint="@color/colorGray"
                     android:clickable="true"
                     android:id="@+id/btnPlay"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/play_96px"
+                    android:src="@drawable/play_96px"
                     android:layout_marginRight="5dp"/>
-                <Button
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    app:fabSize="mini"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp"
+                    android:backgroundTintMode="screen"
+                    android:backgroundTint="@color/colorGray"
                     android:clickable="true"
                     android:id="@+id/btnNext"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/next_96"/>
+                    android:src="@drawable/next_96"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

@@ -1,9 +1,15 @@
 package com.example.khmer_music_library_player.Fragment.Tab1;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,11 +39,16 @@ import com.example.khmer_music_library_player.Activity.MainActivity;
 import com.example.khmer_music_library_player.Activity.PlayerActivity;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 import com.example.khmer_music_library_player.Models.ConstantField;
+import com.example.khmer_music_library_player.Models.CreateNotification;
 import com.example.khmer_music_library_player.Models.GetMusics;
+import com.example.khmer_music_library_player.Models.OnClearFromRecentService;
+import com.example.khmer_music_library_player.Models.Playable;
 import com.example.khmer_music_library_player.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,7 +64,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 
-public class NewMusicFragment extends Fragment{
+public class NewMusicFragment extends Fragment implements Playable {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -67,15 +78,24 @@ public class NewMusicFragment extends Fragment{
     private LinearLayout linearLayoutWaitLoadMusic;
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
-    private Button btnPlay,btnNext,btnPrevious;
+    private FloatingActionButton btnPlay,btnNext,btnPrevious;
     private TextView textViewStartDuration,textViewEndDuration,textViewMusicTitle,textViewSinger;
     private int playingPosition=0;
+    private NotificationManager notificationManager;
+
+    private int notifposition = 0;
+    private boolean isPlaying = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
         initView(view);
         getMusicsList();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            createChannel();
+            getActivity().registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
+            getActivity().startService(new Intent(getActivity(), OnClearFromRecentService.class));
+        }
         return view;
     }
 
@@ -105,7 +125,9 @@ public class NewMusicFragment extends Fragment{
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
                             playingPosition = position;
+                            notifposition= position;
                             initPlayer(playingPosition);
+                            onTrackPlay();
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -113,8 +135,6 @@ public class NewMusicFragment extends Fragment{
                     musicAdapter.notifyDataSetChanged();
                     recyclerView.setVisibility(View.VISIBLE);
                     linearLayoutWaitLoadMusic.setVisibility(View.GONE);
-
-
             }
 
             @Override
@@ -156,6 +176,7 @@ public class NewMusicFragment extends Fragment{
 
                 }
                 initPlayer(playingPosition);
+                onTrackNext();
             }
         });
         btnPrevious.setOnClickListener(new View.OnClickListener() {
@@ -166,10 +187,22 @@ public class NewMusicFragment extends Fragment{
                 } else {
                     playingPosition--;
                 }
-
                 initPlayer(playingPosition);
+                onTrackPrevious();
             }
         });
+    }
+
+    private void createChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID,
+                    "KOD Dev", NotificationManager.IMPORTANCE_LOW);
+
+            notificationManager = getActivity().getSystemService(NotificationManager.class);
+            if (notificationManager != null){
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
     public void changeSelectedSong(int index)
     {
@@ -195,12 +228,10 @@ public class NewMusicFragment extends Fragment{
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.reset();
         }
-
         GetMusics getMusics = getMusicsList.get(position);
-        Uri songResourceUri = Uri.parse(getMusics.mp3Uri);
         textViewMusicTitle.setText(getMusics.musicTitle);
         textViewSinger.setText(getActivity().getResources().getString(R.string.sing_by)+" "+getMusics.singerName);
-        mediaPlayer = MediaPlayer.create(getActivity(), songResourceUri); // create and load mediaplayer with song resources
+        mediaPlayer = MediaPlayer.create(getContext(), Uri.parse(getMusics.mp3Uri)); // create and load mediaplayer with song resources
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -208,8 +239,8 @@ public class NewMusicFragment extends Fragment{
                 textViewEndDuration.setText(totalTime);
                 seekBar.setMax(mediaPlayer.getDuration());
                 mediaPlayer.start();
-                btnPlay.setBackground(getResources().getDrawable(R.drawable.pause_96px));
-                musicAdapter.setIndex(position);
+                btnPlay.setImageResource(R.drawable.pause_96px);
+                musicAdapter.setIndex(position,true);
             }
         });
 
@@ -273,15 +304,19 @@ public class NewMusicFragment extends Fragment{
 
         if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
             mediaPlayer.start();
-            btnPlay.setBackground(getResources().getDrawable(R.drawable.pause_96px));
+            btnPlay.setImageResource(R.drawable.pause_96px);
+            musicAdapter.setIndex(playingPosition,true);
+            onTrackPlay();
         } else {
             pause();
+            onTrackPause();
         }
     }
     private void pause() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
-            btnPlay.setBackground(getResources().getDrawable(R.drawable.play_96px));
+            btnPlay.setImageResource(R.drawable.play_96px);
+            musicAdapter.setIndex(playingPosition,false);
         }
     }
     public String createTimeLabel(int duration) {
@@ -294,4 +329,66 @@ public class NewMusicFragment extends Fragment{
         return timeLabel;
     }
 
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getExtras().getString("actionname");
+
+            switch (action){
+                case CreateNotification.ACTION_PREVIUOS:
+                    onTrackPrevious();
+                    break;
+                case CreateNotification.ACTION_PLAY:
+                    if (isPlaying){
+                        onTrackPause();
+                    } else {
+                        onTrackPlay();
+                    }
+                    break;
+                case CreateNotification.ACTION_NEXT:
+                    onTrackNext();
+                    break;
+            }
+        }
+    };
+
+    @Override
+    public void onTrackPrevious() {
+        notifposition--;
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
+                R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
+    }
+
+    @Override
+    public void onTrackPlay() {
+        Toast.makeText(getActivity(), getMusicsList.size()+"", Toast.LENGTH_SHORT).show();
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
+                R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
+        isPlaying = true;
+    }
+
+    @Override
+    public void onTrackPause() {
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
+                R.drawable.ic_play_arrow_black_24dp, notifposition, getMusicsList.size()-1);
+        isPlaying = false;
+    }
+
+    @Override
+    public void onTrackNext() {
+        notifposition++;
+        CreateNotification.createNotification(getContext(), getMusicsList.get(notifposition),
+                R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            notificationManager.cancelAll();
+        }
+
+        getActivity().unregisterReceiver(broadcastReceiver);
+    }
 }
