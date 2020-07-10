@@ -29,10 +29,10 @@ import java.util.concurrent.ExecutionException;
 
 public class CreateNotification {
 
-    public static final String CHANNEL_ID = "channel1";
-    public static final String ACTION_PREVIUOS = "actionprevious";
-    public static final String ACTION_PLAY = "actionplay";
-    public static final String ACTION_NEXT = "actionnext";
+    public static final String CHANNEL_ID = "_channel1";
+    public static final String ACTION_PREVIUOS = "_actionprevious";
+    public static final String ACTION_PLAY = "_actionplay";
+    public static final String ACTION_NEXT = "_actionnext";
     public static Notification notification;
 
     public static void createNotification(Context context, GetMusics track, int playbutton, int pos, int size){
@@ -42,15 +42,15 @@ public class CreateNotification {
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
             MediaSessionCompat mediaSessionCompat = new MediaSessionCompat( context, "tag");
 
-//            Bitmap icon = null;
-//            Uri uri = Uri.parse(track.getSingerImageUrl());
-//            try {
-//                InputStream inputStream = context.getContentResolver().openInputStream(uri);
-//                icon = BitmapFactory.decodeStream(inputStream);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-            Bitmap icon = loadBitmap(track.getSingerImageUrl());
+            Bitmap icon = null;
+            Uri uri = Uri.parse(track.getSingerImageUrl());
+            try {
+                InputStream inputStream = context.getContentResolver().openInputStream(uri);
+                icon = BitmapFactory.decodeStream(inputStream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+//            Bitmap icon = loadBitmap(track.getSingerImageUrl());
 
             PendingIntent pendingIntentPrevious;
             int drw_previous;
@@ -91,7 +91,6 @@ public class CreateNotification {
                     .setLargeIcon(icon)
                     .setOnlyAlertOnce(true)//show notification for only first time
                     .setShowWhen(true)
-                    .setOngoing(true)
                     .addAction(drw_previous, "Previous", pendingIntentPrevious)
                     .addAction(playbutton, "Play", pendingIntentPlay)
                     .addAction(drw_next, "Next", pendingIntentNext)

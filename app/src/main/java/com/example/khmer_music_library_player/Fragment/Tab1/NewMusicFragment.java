@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -33,6 +37,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.jean.jcplayer.model.JcAudio;
 import com.example.jean.jcplayer.view.JcPlayerView;
 import com.example.khmer_music_library_player.Activity.MainActivity;
@@ -54,7 +59,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
@@ -69,7 +76,7 @@ public class NewMusicFragment extends Fragment implements Playable {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Boolean checkIn =false;
-    private List<GetMusics> getMusicsList =new ArrayList<>();
+    private ArrayList<GetMusics> getMusicsList =new ArrayList<>();
     private MusicAdapter musicAdapter;
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
@@ -82,6 +89,8 @@ public class NewMusicFragment extends Fragment implements Playable {
     private TextView textViewStartDuration,textViewEndDuration,textViewMusicTitle,textViewSinger;
     private int playingPosition=0;
     private NotificationManager notificationManager;
+    private CardView cardviewMain;
+    private ImageView imageView;
 
 
     private int notifposition = 0;
@@ -92,10 +101,11 @@ public class NewMusicFragment extends Fragment implements Playable {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
         initView(view);
         getMusicsList();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             createChannel();
-            getActivity().registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
-            getActivity().startService(new Intent(getActivity(), OnClearFromRecentService.class));
+            getActivity().registerReceiver(broadcastReceiver, new IntentFilter("_TRACKS_TRACKS"));
+            getActivity().startService(new Intent(getActivity().getBaseContext(), OnClearFromRecentService.class));
         }
         return view;
     }
@@ -125,8 +135,9 @@ public class NewMusicFragment extends Fragment implements Playable {
                     musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
+                            cardviewMain.setVisibility(View.VISIBLE);
                             playingPosition = position;
-                            notifposition= position;
+                            notifposition = position;
                             initPlayer(playingPosition);
                             onTrackPlay();
                         }
@@ -157,11 +168,13 @@ public class NewMusicFragment extends Fragment implements Playable {
         textViewEndDuration = view.findViewById(R.id.textViewEndDuration);
         textViewMusicTitle = view.findViewById(R.id.textViewMusicTitle);
         textViewSinger = view.findViewById(R.id.textViewSinger);
+        imageView = view.findViewById(R.id.imgSingerProfile);
         progressBar = view.findViewById(R.id.progressBarPlayer);
         linearLayoutWaitLoadMusic = view.findViewById(R.id.linearlayoutWaitLoadMusic);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        cardviewMain = view.findViewById(R.id.cardviewMain);
+        mediaPlayer = new MediaPlayer();
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,34 +184,43 @@ public class NewMusicFragment extends Fragment implements Playable {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (playingPosition < getMusicsList.size() - 1) {
-                    playingPosition++;
-                } else {
-                    playingPosition = 0;
-
-                }
-                initPlayer(playingPosition);
-                onTrackNext();
+                nextMusic();
             }
         });
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (playingPosition <= 0) {
-                    playingPosition = getMusicsList.size() - 1;
-                } else {
-                    playingPosition--;
-                }
-                initPlayer(playingPosition);
-                onTrackPrevious();
+                previousMusic();
             }
         });
+    }
+
+    private void previousMusic()
+    {
+        if (playingPosition <= 0) {
+            playingPosition = getMusicsList.size() - 1;
+        } else {
+            playingPosition--;
+        }
+        initPlayer(playingPosition);
+        onTrackPrevious();
+    }
+
+    private void nextMusic()
+    {
+        if (playingPosition < getMusicsList.size() - 1) {
+            playingPosition++;
+        } else {
+            playingPosition = 0;
+        }
+        initPlayer(playingPosition);
+        onTrackNext();
     }
 
     private void createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID,
-                    "KOD Dev", NotificationManager.IMPORTANCE_LOW);
+                    "ChhayLin", NotificationManager.IMPORTANCE_LOW);
 
             notificationManager = getActivity().getSystemService(NotificationManager.class);
             if (notificationManager != null){
@@ -226,24 +248,34 @@ public class NewMusicFragment extends Fragment implements Playable {
     };
 
     private void initPlayer(final int position) {
-
+        progressBar.setVisibility(View.VISIBLE);
+        btnPlay.setImageResource(R.drawable.play_96px);
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.reset();
         }
         GetMusics getMusics = getMusicsList.get(position);
         textViewMusicTitle.setText(getMusics.musicTitle);
         textViewSinger.setText(getActivity().getResources().getString(R.string.sing_by)+" "+getMusics.singerName);
-        mediaPlayer = MediaPlayer.create(getContext(), Uri.parse(getMusics.mp3Uri)); // create and load mediaplayer with song resources
+//        mediaPlayer = MediaPlayer.create(getContext(), Uri.parse(getMusics.mp3Uri)); // create and load mediaplayer with song resources
+        Picasso.get().load(getMusics.getSingerImageUrl()).placeholder(R.drawable.ic_image_black_24dp).into(imageView);
+        mediaPlayer.reset();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setDataSource(getMusics.mp3Uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.prepareAsync();
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                progressBar.setVisibility(View.GONE);
+                btnPlay.setImageResource(R.drawable.pause_96px);
                 String totalTime = createTimeLabel(mediaPlayer.getDuration());
                 textViewEndDuration.setText(totalTime);
                 seekBar.setMax(mediaPlayer.getDuration());
                 mediaPlayer.start();
-                btnPlay.setImageResource(R.drawable.pause_96px);
                 musicAdapter.setIndex(position,true);
-
             }
         });
 
@@ -251,15 +283,12 @@ public class NewMusicFragment extends Fragment implements Playable {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 int curSongPoition = position;
-                Toast.makeText(getActivity(), "st", Toast.LENGTH_SHORT).show();
                 if (curSongPoition < getMusicsList.size() - 1) {
-                    Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
                     curSongPoition++;
                     playingPosition = curSongPoition;
                     initPlayer(curSongPoition);
                     onTrackNext();
                 } else {
-                    Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
                     curSongPoition = 0;
                     initPlayer(curSongPoition);
                 }
@@ -271,7 +300,6 @@ public class NewMusicFragment extends Fragment implements Playable {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                 if (fromUser) {
                     mediaPlayer.seekTo(progress);
                     seekBar.setProgress(progress);
@@ -280,15 +308,16 @@ public class NewMusicFragment extends Fragment implements Playable {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                btnPlay.setImageResource(R.drawable.play_96px);
+                progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                btnPlay.setImageResource(R.drawable.pause_96px);
+                progressBar.setVisibility(View.GONE);
             }
         });
-
 
         new Thread(new Runnable() {
             @Override
@@ -342,8 +371,8 @@ public class NewMusicFragment extends Fragment implements Playable {
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getExtras().getString("actionname");
-
+            String action = intent.getExtras().getString("_actionname");
+            Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
             switch (action){
                 case CreateNotification.ACTION_PREVIUOS:
                     onTrackPrevious();
@@ -387,7 +416,7 @@ public class NewMusicFragment extends Fragment implements Playable {
     @Override
     public void onTrackNext() {
         notifposition++;
-        CreateNotification.createNotification(getContext(), getMusicsList.get(notifposition),
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
                 R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
     }
 
@@ -397,7 +426,6 @@ public class NewMusicFragment extends Fragment implements Playable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             notificationManager.cancelAll();
         }
-
         getActivity().unregisterReceiver(broadcastReceiver);
     }
 }

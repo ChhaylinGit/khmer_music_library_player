@@ -27,13 +27,13 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="5dp">
 
             <ImageView
                 android:id="@+id/imgSingerProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/one"
+                android:src="@drawable/default_image"
                 android:scaleType="fitXY"
                 android:background="@color/colorGray"/>
 
@@ -58,14 +58,25 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorBlack"
                     android:fontFamily="@font/khmer_os_battambang"/>
-                <ImageView
-                    android:id="@+id/imagePlayingGif"
+                <FrameLayout
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/playing_bar"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:visibility="visible"/>
+                    android:layout_marginRight="10dp">
+                    <ImageView
+                        android:id="@+id/imagePlayingGif"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/playing_bar"
+                        android:visibility="visible"/>
+                    <ProgressBar
+                        android:id="@+id/progressBarPlayer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:indeterminateTint="@color/colorPrimary"
+                        android:visibility="gone"/>
+                </FrameLayout>
+
             </RelativeLayout>
 
             <TextView

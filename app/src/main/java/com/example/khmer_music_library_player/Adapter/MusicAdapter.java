@@ -49,7 +49,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 itemClickListener.onClickListener(getMusics,position);
                 index = position;
                 notifyDataSetChanged();

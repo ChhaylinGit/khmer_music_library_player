@@ -35,6 +35,8 @@
             android:label="@string/title_activity_navegation__drawer"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Activity.MainActivity" />
+        <receiver android:name=".Models.NotificationActionService"/>
+        <service android:name=".Models.OnClearFromRecentService"/>
     </application>
 
 </manifest>
