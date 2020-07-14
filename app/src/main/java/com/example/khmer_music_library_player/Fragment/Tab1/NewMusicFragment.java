@@ -138,8 +138,9 @@ public class NewMusicFragment extends Fragment implements Playable {
                             cardviewMain.setVisibility(View.VISIBLE);
                             playingPosition = position;
                             notifposition = position;
+                            Toast.makeText(getActivity(), position+ "", Toast.LENGTH_SHORT).show();
                             initPlayer(playingPosition);
-                            onTrackPlay();
+
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -178,19 +179,21 @@ public class NewMusicFragment extends Fragment implements Playable {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                play();
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                    onTrackPlay();
+                }else{onTrackPause();}
             }
         });
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nextMusic();
+                onTrackNext();
             }
         });
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                previousMusic();
+                onTrackPrevious();
             }
         });
     }
@@ -276,6 +279,7 @@ public class NewMusicFragment extends Fragment implements Playable {
                 seekBar.setMax(mediaPlayer.getDuration());
                 mediaPlayer.start();
                 musicAdapter.setIndex(position,true);
+                CreateNotification.createNotification(getActivity(),getMusicsList.get(position),R.drawable.ic_pause_black_24dp, position, getMusicsList.size()-1);
             }
         });
 
@@ -287,16 +291,14 @@ public class NewMusicFragment extends Fragment implements Playable {
                     curSongPoition++;
                     playingPosition = curSongPoition;
                     initPlayer(curSongPoition);
-                    onTrackNext();
                 } else {
                     curSongPoition = 0;
+                    playingPosition = curSongPoition;
                     initPlayer(curSongPoition);
                 }
 
             }
         });
-
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -393,31 +395,51 @@ public class NewMusicFragment extends Fragment implements Playable {
 
     @Override
     public void onTrackPrevious() {
-        notifposition--;
-        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
-                R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
+        if (playingPosition <= 0) {
+            playingPosition = getMusicsList.size() - 1;
+        } else {
+            playingPosition--;
+        }
+        initPlayer(playingPosition);
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
+                R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
     }
 
     @Override
     public void onTrackPlay() {
-
-        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
-                R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+            btnPlay.setImageResource(R.drawable.pause_96px);
+            musicAdapter.setIndex(playingPosition,true);
+        }
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
+                R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
         isPlaying = true;
     }
 
     @Override
     public void onTrackPause() {
-        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
-                R.drawable.ic_play_arrow_black_24dp, notifposition, getMusicsList.size()-1);
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            btnPlay.setImageResource(R.drawable.play_96px);
+            musicAdapter.setIndex(playingPosition,false);
+        }
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
+                R.drawable.ic_play_arrow_black_24dp, playingPosition, getMusicsList.size()-1);
         isPlaying = false;
     }
 
     @Override
     public void onTrackNext() {
-        notifposition++;
-        CreateNotification.createNotification(getActivity(), getMusicsList.get(notifposition),
-                R.drawable.ic_pause_black_24dp, notifposition, getMusicsList.size()-1);
+        if (playingPosition < getMusicsList.size() - 1) {
+            playingPosition++;
+        } else {
+            playingPosition = 0;
+        }
+        initPlayer(playingPosition);
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
+                R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
+
     }
 
     @Override

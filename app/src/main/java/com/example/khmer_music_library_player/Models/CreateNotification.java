@@ -42,15 +42,16 @@ public class CreateNotification {
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
             MediaSessionCompat mediaSessionCompat = new MediaSessionCompat( context, "tag");
 
-            Bitmap icon = null;
-            Uri uri = Uri.parse(track.getSingerImageUrl());
-            try {
-                InputStream inputStream = context.getContentResolver().openInputStream(uri);
-                icon = BitmapFactory.decodeStream(inputStream);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-//            Bitmap icon = loadBitmap(track.getSingerImageUrl());
+//            Bitmap icon = null;
+//            Uri uri = Uri.parse(track.getSingerImageUrl());
+//            try {
+//                InputStream inputStream = context.getContentResolver().openInputStream(uri);
+//                icon = BitmapFactory.decodeStream(inputStream);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+            Bitmap icon = loadBitmap(track.getSingerImageUrl());
+
 
             PendingIntent pendingIntentPrevious;
             int drw_previous;
