@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -23,6 +24,8 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
@@ -41,18 +44,7 @@ public class CreateNotification {
 
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
             MediaSessionCompat mediaSessionCompat = new MediaSessionCompat( context, "tag");
-
-//            Bitmap icon = null;
-//            Uri uri = Uri.parse(track.getSingerImageUrl());
-//            try {
-//                InputStream inputStream = context.getContentResolver().openInputStream(uri);
-//                icon = BitmapFactory.decodeStream(inputStream);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-            Bitmap icon = loadBitmap(track.getSingerImageUrl());
-
-
+            Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.one);
             PendingIntent pendingIntentPrevious;
             int drw_previous;
             if (pos == 0){
@@ -100,54 +92,23 @@ public class CreateNotification {
                         .setMediaSession(mediaSessionCompat.getSessionToken()))
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                     .build();
-
             notificationManagerCompat.notify(1, notification);
-
         }
     }
 
-    public static Bitmap loadBitmap(String url)
-    {
-        Bitmap bm = null;
-        InputStream is = null;
-        BufferedInputStream bis = null;
-        try
-        {
-            URLConnection conn = new URL(url).openConnection();
-            conn.connect();
-            is = conn.getInputStream();
-            bis = new BufferedInputStream(is, 8192);
-            bm = BitmapFactory.decodeStream(bis);
-        }
-        catch (Exception e)
-        {
+    public static Bitmap getBitmapFromURL(String strURL) {
+        try {
+            URL url = new URL(strURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        finally {
-            if (bis != null)
-            {
-                try
-                {
-                    bis.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            if (is != null)
-            {
-                try
-                {
-                    is.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return bm;
     }
 
 }

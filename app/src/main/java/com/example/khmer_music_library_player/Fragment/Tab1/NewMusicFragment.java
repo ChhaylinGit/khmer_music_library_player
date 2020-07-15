@@ -35,7 +35,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.bumptech.glide.Glide;
 import com.example.jean.jcplayer.model.JcAudio;
@@ -138,7 +138,6 @@ public class NewMusicFragment extends Fragment implements Playable {
                             cardviewMain.setVisibility(View.VISIBLE);
                             playingPosition = position;
                             notifposition = position;
-                            Toast.makeText(getActivity(), position+ "", Toast.LENGTH_SHORT).show();
                             initPlayer(playingPosition);
 
                         }
@@ -374,7 +373,6 @@ public class NewMusicFragment extends Fragment implements Playable {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getExtras().getString("_actionname");
-            Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
             switch (action){
                 case CreateNotification.ACTION_PREVIUOS:
                     onTrackPrevious();
