@@ -40,6 +40,7 @@
     <string name="tab_old_music">ចំរៀងជំនាន់ដើម</string>
     <string name="tab_eng_music">ចំរៀងអង់គ្លស</string>
     <string name="tab_remix_music">ចំរៀងRemix</string>
+    <string name="tab_production">ផលិតកម្ម</string>
 
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="dummy_button">Dummy Button</string>

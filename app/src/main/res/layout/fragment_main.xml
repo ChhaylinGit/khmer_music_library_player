@@ -5,38 +5,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     tools:context=".Fragment.MainFragment">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:tabTextColor="@color/tabTextColor"
+            app:tabSelectedTextColor="@color/tabTextColorUnSelect"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorWhite"
+            app:tabTextAppearance="@style/MineCustomTabText">
+        </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tablayout"
+        android:layout_above="@id/inclu">
+    </androidx.viewpager.widget.ViewPager>
 
     <FrameLayout
         android:id="@+id/musicContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/linearlayout">
+        android:layout_above="@id/inclu"
+        android:layout_below="@id/tablayout">
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/linearlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:background="@color/colorWhite"
-            app:menu="@menu/bottom_navigation_menu"
-            app:labelVisibilityMode="labeled"
-            android:theme="@style/Widget.BottomNavigationView14"/>
+   <include
+       android:id="@+id/inclu"
+       layout="@layout/fragment_media_player"
+       android:layout_height="90dp"
+       android:layout_width="match_parent"
+       android:layout_above="@id/adView"
+       android:visibility="gone"/>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearlayoutBottom"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:orientation="vertical">-->
+<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--            android:id="@+id/bottom_navigation"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="1dp"-->
+<!--            android:background="@color/colorWhite"-->
+<!--            app:menu="@menu/bottom_navigation_menu"-->
+<!--            app:labelVisibilityMode="labeled"-->
+<!--            android:theme="@style/Widget.BottomNavigationView14"/>-->
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/bottom_navigation"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            android:layout_alignParentBottom="true">
         </com.google.android.gms.ads.AdView>
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </RelativeLayout>

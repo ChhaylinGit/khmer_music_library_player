@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     public void changeSelectedSong(int index)
     {
         musicAdapter.setSelectedPosition(musicAdapter.getSelectedPosition());

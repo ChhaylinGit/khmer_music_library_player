@@ -7,7 +7,6 @@ import android.text.SpannableString;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.Menu;
-
 import com.example.khmer_music_library_player.Models.CustomTypefaceSpan;
 import com.example.khmer_music_library_player.R;
 import com.google.android.material.navigation.NavigationView;
@@ -65,7 +64,6 @@ public class Navegation_Drawer extends AppCompatActivity {
                     applyFontToMenuItem(subMenuItem);
                 }
             }
-
             //the method we have create in activity
             applyFontToMenuItem(mi);
         }

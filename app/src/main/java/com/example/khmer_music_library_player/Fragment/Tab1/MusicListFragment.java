@@ -53,12 +53,7 @@ public class MusicListFragment extends Fragment {
     private void  setUpviewPager()
     {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(),1);
-        adapter.addFragment(new NewMusicFragment(),getResources().getText(R.string.tab_new_music).toString());
-        adapter.addFragment(new PopularMusicFragment(),getResources().getText(R.string.tab_popular_music).toString());
-        adapter.addFragment(new CurrentMusicFragment(),getResources().getText(R.string.tab_now_music).toString());
-        adapter.addFragment(new OldMusicFragment(),getResources().getText(R.string.tab_old_music).toString());
-        adapter.addFragment(new EnglishMusicFragment(),getResources().getText(R.string.tab_eng_music).toString());
-        adapter.addFragment(new RemixMusicFragment(),getResources().getText(R.string.tab_remix_music).toString());
+        adapter.addFragment(new MusicListFragment(),getResources().getText(R.string.tab_new_music).toString());
         viewPager.setAdapter(adapter);
     }
 

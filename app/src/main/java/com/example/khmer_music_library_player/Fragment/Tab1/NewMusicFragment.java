@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +44,7 @@ import com.example.jean.jcplayer.view.JcPlayerView;
 import com.example.khmer_music_library_player.Activity.MainActivity;
 import com.example.khmer_music_library_player.Activity.PlayerActivity;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
+import com.example.khmer_music_library_player.Fragment.MainFragment;
 import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.CreateNotification;
 import com.example.khmer_music_library_player.Models.GetMusics;
@@ -91,17 +93,15 @@ public class NewMusicFragment extends Fragment implements Playable {
     private NotificationManager notificationManager;
     private CardView cardviewMain;
     private ImageView imageView;
-
-
     private int notifposition = 0;
     private boolean isPlaying = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
         initView(view);
         getMusicsList();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             createChannel();
             getActivity().registerReceiver(broadcastReceiver, new IntentFilter("_TRACKS_TRACKS"));
@@ -130,16 +130,16 @@ public class NewMusicFragment extends Fragment implements Playable {
                         getMusicsList.add(getMusics);
                     }
                 }
-                Collections.shuffle(getMusicsList); // Random item in list
+                Collections.shuffle(getMusicsList); //Random item in list
 
                     musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
+//                            cardviewMain.setVisibility(View.VISIBLE);
+//                            playingPosition = position;
+//                            notifposition = position;
+//                            initPlayer(playingPosition);
                             cardviewMain.setVisibility(View.VISIBLE);
-                            playingPosition = position;
-                            notifposition = position;
-                            initPlayer(playingPosition);
-
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -158,6 +158,7 @@ public class NewMusicFragment extends Fragment implements Playable {
 
     private void  initView(View view)
     {
+        cardviewMain = view.findViewById(R.id.inclu);
         recyclerView = view.findViewById(R.id.recyclerViewMusic);
         progressBar = view.findViewById(R.id.progressBarPlayer);
         seekBar = view.findViewById(R.id.seekBar);

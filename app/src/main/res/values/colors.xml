@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#115DA5</color> <!-- TOP -->
-    <color name="colorPrimary">#1367B8</color>
+    <color name="colorPrimaryDark">#125688</color> <!-- TOP -->
+    <color name="colorPrimary">#125688</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorGray">#F0F0F0</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="tabTextColor">#E9EAEF</color>
+    <color name="tabTextColor">#DDDDDD</color>
+    <color name="tabTextColorUnSelect">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="black_overlay">#66000000</color>
 </resources>
