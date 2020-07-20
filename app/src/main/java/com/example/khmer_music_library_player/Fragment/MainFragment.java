@@ -36,7 +36,7 @@ public class MainFragment extends Fragment {
     private ViewPager viewPager;
     private ArrayList<GetMusics> getMusicsList = new ArrayList<>();
     private MusicAdapter musicAdapter;
-    private CardView cardView;
+    public CardView cardView;
     private int[] tabIcons = {
             R.drawable.bottom_nav_music,
             R.drawable.bottom_nav_singer,
@@ -112,15 +112,8 @@ public class MainFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewpager);
         tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-        cardView = view.findViewById(R.id.cardviewMain);
+        cardView = view.findViewById(R.id.cardviewPlayer);
     }
-
-    public void showMediaPlayer()
-    {
-        cardView.setVisibility(View.VISIBLE);
-    }
-
-
 
 //    private void setUpMediaplayer()
 //    {

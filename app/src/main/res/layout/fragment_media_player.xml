@@ -15,7 +15,6 @@
     card_view:cardPreventCornerOverlap="false"
     card_view:cardUseCompatPadding="true"
     android:foreground="?android:attr/selectableItemBackground">
-
     <LinearLayout
         android:id="@+id/linearlayout"
         android:layout_width="match_parent"

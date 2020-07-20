@@ -36,6 +36,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -100,6 +101,8 @@ public class NewMusicFragment extends Fragment implements Playable {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        cardviewMain = v.findViewById(R.id.cardviewPlayer);
         initView(view);
         getMusicsList();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -139,7 +142,9 @@ public class NewMusicFragment extends Fragment implements Playable {
 //                            playingPosition = position;
 //                            notifposition = position;
 //                            initPlayer(playingPosition);
-                            cardviewMain.setVisibility(View.VISIBLE);
+//                            cardviewMain.setVisibility(View.GONE);
+                            MainFragment fragment = new MainFragment();
+                            fragment.getView().findViewById(R.id.cardviewPlayer).setVisibility(View.GONE);
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -158,7 +163,6 @@ public class NewMusicFragment extends Fragment implements Playable {
 
     private void  initView(View view)
     {
-        cardviewMain = view.findViewById(R.id.inclu);
         recyclerView = view.findViewById(R.id.recyclerViewMusic);
         progressBar = view.findViewById(R.id.progressBarPlayer);
         seekBar = view.findViewById(R.id.seekBar);
@@ -174,7 +178,7 @@ public class NewMusicFragment extends Fragment implements Playable {
         linearLayoutWaitLoadMusic = view.findViewById(R.id.linearlayoutWaitLoadMusic);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cardviewMain = view.findViewById(R.id.cardviewMain);
+
         mediaPlayer = new MediaPlayer();
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
