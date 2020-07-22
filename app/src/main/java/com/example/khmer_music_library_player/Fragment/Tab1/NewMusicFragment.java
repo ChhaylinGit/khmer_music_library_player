@@ -1,12 +1,14 @@
 package com.example.khmer_music_library_player.Fragment.Tab1;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -29,33 +31,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.bumptech.glide.Glide;
 import com.example.jean.jcplayer.model.JcAudio;
-import com.example.jean.jcplayer.view.JcPlayerView;
-import com.example.khmer_music_library_player.Activity.MainActivity;
-import com.example.khmer_music_library_player.Activity.PlayerActivity;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
-import com.example.khmer_music_library_player.Fragment.MainFragment;
 import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.CreateNotification;
 import com.example.khmer_music_library_player.Models.GetMusics;
 import com.example.khmer_music_library_player.Models.OnClearFromRecentService;
 import com.example.khmer_music_library_player.Models.Playable;
 import com.example.khmer_music_library_player.R;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,16 +57,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
 
 public class NewMusicFragment extends Fragment implements Playable {
 
@@ -83,8 +70,6 @@ public class NewMusicFragment extends Fragment implements Playable {
     private MusicAdapter musicAdapter;
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
-    private ArrayList<JcAudio> jcAudiosList = new ArrayList<>();
-    private int currentIndex;
     private LinearLayout linearLayoutWaitLoadMusic;
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
@@ -92,30 +77,33 @@ public class NewMusicFragment extends Fragment implements Playable {
     private TextView textViewStartDuration,textViewEndDuration,textViewMusicTitle,textViewSinger;
     private int playingPosition=0;
     private NotificationManager notificationManager;
-    private CardView cardviewMain;
     private ImageView imageView;
-    private int notifposition = 0;
     private boolean isPlaying = false;
+    private Context thisContext;
+    private FrameLayout frameLayout;
 
+    public NewMusicFragment(Context context)
+    {
+        thisContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
-        cardviewMain = v.findViewById(R.id.cardviewPlayer);
+        initMainView();
         initView(view);
         getMusicsList();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            createChannel();
-            getActivity().registerReceiver(broadcastReceiver, new IntentFilter("_TRACKS_TRACKS"));
-            getActivity().startService(new Intent(getActivity().getBaseContext(), OnClearFromRecentService.class));
-        }
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            createChannel();
+            getActivity().registerReceiver(broadcastReceiver, new IntentFilter("_TRACKS_TRACKS"));
+            getActivity().startService(new Intent(getActivity().getBaseContext(), OnClearFromRecentService.class));
+        }
     }
 
     public void getMusicsList()
@@ -138,13 +126,10 @@ public class NewMusicFragment extends Fragment implements Playable {
                     musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
-//                            cardviewMain.setVisibility(View.VISIBLE);
-//                            playingPosition = position;
-//                            notifposition = position;
-//                            initPlayer(playingPosition);
-//                            cardviewMain.setVisibility(View.GONE);
-                            MainFragment fragment = new MainFragment();
-                            fragment.getView().findViewById(R.id.cardviewPlayer).setVisibility(View.GONE);
+                          playingPosition = position;
+                          initPlayer(playingPosition);
+
+                          frameLayout.setVisibility(View.VISIBLE);
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -158,27 +143,33 @@ public class NewMusicFragment extends Fragment implements Playable {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
+
+    }
+
+    private void initMainView()
+    {
+        frameLayout = ((Activity)thisContext).findViewById(R.id.musicContainer);
+        progressBar = ((Activity)thisContext).findViewById(R.id.progressBarPlayer);
+        seekBar = ((Activity)thisContext).findViewById(R.id.seekBar);
+        btnPlay = ((Activity)thisContext).findViewById(R.id.btnPlay);
+        btnNext = ((Activity)thisContext).findViewById(R.id.btnNext);
+        btnPrevious = ((Activity)thisContext).findViewById(R.id.btnPrevious);
+        textViewStartDuration = ((Activity)thisContext).findViewById(R.id.textViewStartDuration);
+        textViewEndDuration = ((Activity)thisContext).findViewById(R.id.textViewEndDuration);
+        textViewMusicTitle = ((Activity)thisContext).findViewById(R.id.textViewMusicTitle);
+        textViewSinger = ((Activity)thisContext).findViewById(R.id.textViewSinger);
+        imageView = ((Activity)thisContext).findViewById(R.id.imgSingerProfile);
+        progressBar = ((Activity)thisContext).findViewById(R.id.progressBarPlayer);
     }
 
     private void  initView(View view)
     {
         recyclerView = view.findViewById(R.id.recyclerViewMusic);
-        progressBar = view.findViewById(R.id.progressBarPlayer);
-        seekBar = view.findViewById(R.id.seekBar);
-        btnPlay = view.findViewById(R.id.btnPlay);
-        btnNext = view.findViewById(R.id.btnNext);
-        btnPrevious = view.findViewById(R.id.btnPrevious);
-        textViewStartDuration = view.findViewById(R.id.textViewStartDuration);
-        textViewEndDuration = view.findViewById(R.id.textViewEndDuration);
-        textViewMusicTitle = view.findViewById(R.id.textViewMusicTitle);
-        textViewSinger = view.findViewById(R.id.textViewSinger);
-        imageView = view.findViewById(R.id.imgSingerProfile);
-        progressBar = view.findViewById(R.id.progressBarPlayer);
         linearLayoutWaitLoadMusic = view.findViewById(R.id.linearlayoutWaitLoadMusic);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         mediaPlayer = new MediaPlayer();
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,32 +193,9 @@ public class NewMusicFragment extends Fragment implements Playable {
         });
     }
 
-    private void previousMusic()
-    {
-        if (playingPosition <= 0) {
-            playingPosition = getMusicsList.size() - 1;
-        } else {
-            playingPosition--;
-        }
-        initPlayer(playingPosition);
-        onTrackPrevious();
-    }
-
-    private void nextMusic()
-    {
-        if (playingPosition < getMusicsList.size() - 1) {
-            playingPosition++;
-        } else {
-            playingPosition = 0;
-        }
-        initPlayer(playingPosition);
-        onTrackNext();
-    }
-
     private void createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID,
-                    "ChhayLin", NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID, ConstantField.CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW);
 
             notificationManager = getActivity().getSystemService(NotificationManager.class);
             if (notificationManager != null){
@@ -235,13 +203,7 @@ public class NewMusicFragment extends Fragment implements Playable {
             }
         }
     }
-    public void changeSelectedSong(int index)
-    {
-        musicAdapter.setSelectedPosition(musicAdapter.getSelectedPosition());
-        currentIndex = index;
-        musicAdapter.setSelectedPosition(currentIndex);
-        musicAdapter.setSelectedPosition(currentIndex);
-    }
+
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -263,7 +225,6 @@ public class NewMusicFragment extends Fragment implements Playable {
         GetMusics getMusics = getMusicsList.get(position);
         textViewMusicTitle.setText(getMusics.musicTitle);
         textViewSinger.setText(getActivity().getResources().getString(R.string.sing_by)+" "+getMusics.singerName);
-//        mediaPlayer = MediaPlayer.create(getContext(), Uri.parse(getMusics.mp3Uri)); // create and load mediaplayer with song resources
         Picasso.get().load(getMusics.getSingerImageUrl()).placeholder(R.drawable.ic_image_black_24dp).into(imageView);
         mediaPlayer.reset();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -284,6 +245,7 @@ public class NewMusicFragment extends Fragment implements Playable {
                 mediaPlayer.start();
                 musicAdapter.setIndex(position,true);
                 CreateNotification.createNotification(getActivity(),getMusicsList.get(position),R.drawable.ic_pause_black_24dp, position, getMusicsList.size()-1);
+
             }
         });
 
@@ -344,25 +306,6 @@ public class NewMusicFragment extends Fragment implements Playable {
         }).start();
     }
 
-    private void play() {
-
-        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-            btnPlay.setImageResource(R.drawable.pause_96px);
-            musicAdapter.setIndex(playingPosition,true);
-            onTrackPlay();
-        } else {
-            pause();
-            onTrackPause();
-        }
-    }
-    private void pause() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            btnPlay.setImageResource(R.drawable.play_96px);
-            musicAdapter.setIndex(playingPosition,false);
-        }
-    }
     public String createTimeLabel(int duration) {
         String timeLabel = "";
         int min = duration / 1000 / 60;
@@ -404,8 +347,8 @@ public class NewMusicFragment extends Fragment implements Playable {
             playingPosition--;
         }
         initPlayer(playingPosition);
-        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
-                R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition), R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
+        recyclerView.smoothScrollToPosition(playingPosition);
     }
 
     @Override
@@ -440,9 +383,8 @@ public class NewMusicFragment extends Fragment implements Playable {
             playingPosition = 0;
         }
         initPlayer(playingPosition);
-        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
-                R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
-
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition), R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
+        recyclerView.smoothScrollToPosition(playingPosition);
     }
 
     @Override

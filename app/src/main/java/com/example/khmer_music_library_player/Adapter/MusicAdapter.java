@@ -52,6 +52,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
                 itemClickListener.onClickListener(getMusics,position);
                 index = position;
                 notifyDataSetChanged();
+                notifyItemMoved(position,0);
             }
         });
         if(index == position)

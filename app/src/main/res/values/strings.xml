@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">khmer_music_library_player</string>
+    <string name="app_name">ចំរៀងជំនាន់ដើម</string>
     <string name="title_activity_navegation__drawer">ចំរៀងជំនាន់ដើម</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

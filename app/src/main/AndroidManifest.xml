@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name = "android.permission.VIBRATE"/>
+    <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +21,9 @@
         <activity android:name=".Activity.PlayerActivity"></activity>
         <activity
             android:name=".Activity.SplashScreenActivity"
-            android:label="@string/title_activity_navegation__drawer"
-            android:theme="@style/AppFullScreenTheme">
+            android:label= "@string/title_activity_navegation__drawer"
+            android:theme="@style/AppFullScreenTheme"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +38,9 @@
         <activity
             android:name=".Activity.Navegation_Drawer"
             android:label="@string/title_activity_navegation__drawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:showOnLockScreen="true"></activity>
         <activity android:name=".Activity.MainActivity" />
         <receiver android:name=".Models.NotificationActionService"/>
         <service android:name=".Models.OnClearFromRecentService"/>

@@ -7,6 +7,8 @@ import android.text.SpannableString;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.Menu;
+import android.view.WindowManager;
+
 import com.example.khmer_music_library_player.Models.CustomTypefaceSpan;
 import com.example.khmer_music_library_player.R;
 import com.google.android.material.navigation.NavigationView;

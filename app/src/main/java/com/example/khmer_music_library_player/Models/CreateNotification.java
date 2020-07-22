@@ -17,6 +17,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.khmer_music_library_player.Activity.MainActivity;
+import com.example.khmer_music_library_player.Activity.Navegation_Drawer;
 import com.example.khmer_music_library_player.R;
 
 
@@ -37,7 +39,7 @@ public class CreateNotification {
     public static final String ACTION_PLAY = "_actionplay";
     public static final String ACTION_NEXT = "_actionnext";
     public static Notification notification;
-
+    static final int NOTIFICATION_ID = 1;
     public static void createNotification(Context context, GetMusics track, int playbutton, int pos, int size){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -58,10 +60,8 @@ public class CreateNotification {
                 drw_previous = R.drawable.ic_skip_previous_black_24dp;
             }
 
-            Intent intentPlay = new Intent(context, NotificationActionService.class)
-                    .setAction(ACTION_PLAY);
-            PendingIntent pendingIntentPlay = PendingIntent.getBroadcast(context, 0,
-                    intentPlay, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intentPlay = new Intent(context, NotificationActionService.class).setAction(ACTION_PLAY);
+            PendingIntent pendingIntentPlay = PendingIntent.getBroadcast(context, 0, intentPlay, PendingIntent.FLAG_UPDATE_CURRENT);
 
             PendingIntent pendingIntentNext;
             int drw_next;
@@ -76,11 +76,19 @@ public class CreateNotification {
                 drw_next = R.drawable.ic_skip_next_black_24dp;
             }
 
+            Intent buttonIntent = new Intent(context, NotificationActionService.class);
+            buttonIntent.putExtra("notificationId",NOTIFICATION_ID);
+            PendingIntent btPendingIntent = PendingIntent.getBroadcast(context, 0, buttonIntent,0);
+
+
             //create notification
+            Intent intent = new Intent(context, Navegation_Drawer.class);
+            PendingIntent resultIntent = PendingIntent. getActivity (context, 0 , intent , 0 ) ;
             notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_music_note)
                     .setContentTitle(track.getMusicTitle())
                     .setContentText(track.getSingerName())
+                    .setContentIntent(resultIntent)
                     .setLargeIcon(icon)
                     .setOnlyAlertOnce(true)//show notification for only first time
                     .setShowWhen(true)
@@ -89,9 +97,11 @@ public class CreateNotification {
                     .addAction(drw_next, "Next", pendingIntentNext)
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(0, 1, 2)
-                        .setMediaSession(mediaSessionCompat.getSessionToken()))
-                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setShowCancelButton(true))
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .build();
+
             notificationManagerCompat.notify(1, notification);
         }
     }
