@@ -141,6 +141,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                musicContainer.setVisibility(View.GONE);
             }
         });
 //        cardView = view.findViewById(R.id.cardviewPlayer);

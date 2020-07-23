@@ -56,6 +56,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,16 +73,17 @@ public class NewMusicFragment extends Fragment implements Playable {
     private ValueEventListener valueEventListener;
     private LinearLayout linearLayoutWaitLoadMusic;
     private MediaPlayer mediaPlayer;
-    private SeekBar seekBar;
+    private SeekBar seekBar,seekBarMain;
     private FloatingActionButton btnPlay,btnNext,btnPrevious;
-    private TextView textViewStartDuration,textViewEndDuration,textViewMusicTitle,textViewSinger;
+    private TextView textViewStartDuration,textViewStartDurationMain,textViewEndDuration,textViewEndDurationMain,textViewMusicTitle,textViewSinger;
     private int playingPosition=0;
     private NotificationManager notificationManager;
     private ImageView imageView;
     private boolean isPlaying = false;
     private Context thisContext;
     private FrameLayout frameLayout;
-
+    SlidingUpPanelLayout slideup_panel;
+    CardView cardView;
 
     public NewMusicFragment(Context context)
     {
@@ -128,9 +130,9 @@ public class NewMusicFragment extends Fragment implements Playable {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
                           playingPosition = position;
-//                         initPlayer(playingPosition);
+                          initPlayer(playingPosition);
                           frameLayout.setVisibility(View.VISIBLE);
-
+                          slideup_panel.setPanelHeight(cardView.getHeight());
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -151,14 +153,19 @@ public class NewMusicFragment extends Fragment implements Playable {
 
     private void initMainView()
     {
+        cardView = ((Activity)thisContext).findViewById(R.id.cardviewPlayerMain);
+        slideup_panel = ((Activity)thisContext).findViewById(R.id.slideup_panel);
         frameLayout = ((Activity)thisContext).findViewById(R.id.musicContainer);
         progressBar = ((Activity)thisContext).findViewById(R.id.progressBarPlayer);
+        seekBarMain = ((Activity)thisContext).findViewById(R.id.seekBarMain);
         seekBar = ((Activity)thisContext).findViewById(R.id.seekBar);
         btnPlay = ((Activity)thisContext).findViewById(R.id.btnPlay);
         btnNext = ((Activity)thisContext).findViewById(R.id.btnNext);
         btnPrevious = ((Activity)thisContext).findViewById(R.id.btnPrevious);
         textViewStartDuration = ((Activity)thisContext).findViewById(R.id.textViewStartDuration);
+        textViewStartDurationMain = ((Activity)thisContext).findViewById(R.id.textViewStartDurationMain);
         textViewEndDuration = ((Activity)thisContext).findViewById(R.id.textViewEndDuration);
+        textViewEndDurationMain = ((Activity)thisContext).findViewById(R.id.textViewEndDurationMain);
         textViewMusicTitle = ((Activity)thisContext).findViewById(R.id.textViewMusicTitle);
         textViewSinger = ((Activity)thisContext).findViewById(R.id.textViewSinger);
         imageView = ((Activity)thisContext).findViewById(R.id.imgSingerProfile);
@@ -212,8 +219,10 @@ public class NewMusicFragment extends Fragment implements Playable {
         public void handleMessage(Message msg) {
             int current_position = msg.what;
             seekBar.setProgress(current_position);
+            seekBarMain.setProgress(current_position);
             String cTime = createTimeLabel(current_position);
             textViewStartDuration.setText(cTime);
+            textViewStartDurationMain.setText(cTime);
         }
     };
 
@@ -242,7 +251,9 @@ public class NewMusicFragment extends Fragment implements Playable {
                 btnPlay.setImageResource(R.drawable.pause_96px);
                 String totalTime = createTimeLabel(mediaPlayer.getDuration());
                 textViewEndDuration.setText(totalTime);
+                textViewEndDurationMain.setText(totalTime);
                 seekBar.setMax(mediaPlayer.getDuration());
+                seekBarMain.setMax(mediaPlayer.getDuration());
                 mediaPlayer.start();
                 musicAdapter.setIndex(position,true);
                 CreateNotification.createNotification(getActivity(),getMusicsList.get(position),R.drawable.ic_pause_black_24dp, position, getMusicsList.size()-1);
@@ -272,6 +283,7 @@ public class NewMusicFragment extends Fragment implements Playable {
                 if (fromUser) {
                     mediaPlayer.seekTo(progress);
                     seekBar.setProgress(progress);
+                    seekBarMain.setProgress(progress);
                 }
             }
 

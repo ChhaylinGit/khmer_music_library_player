@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoScrollableView="@+id/vpPlace"
-        sothree:umanoPanelHeight="90dp"
+        sothree:umanoPanelHeight="0dp"
         sothree:umanoDragView="@+id/dragView">
         <LinearLayout
             android:layout_width="match_parent"
