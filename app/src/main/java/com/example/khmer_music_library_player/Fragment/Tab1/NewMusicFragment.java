@@ -82,6 +82,7 @@ public class NewMusicFragment extends Fragment implements Playable {
     private Context thisContext;
     private FrameLayout frameLayout;
 
+
     public NewMusicFragment(Context context)
     {
         thisContext = context;
@@ -127,8 +128,9 @@ public class NewMusicFragment extends Fragment implements Playable {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
                           playingPosition = position;
-                          initPlayer(playingPosition);
+//                         initPlayer(playingPosition);
                           frameLayout.setVisibility(View.VISIBLE);
+
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);

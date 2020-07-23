@@ -1,19 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<androidx.drawerlayout.widget.DrawerLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.DownloadFragment">
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/suplSurveys"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:hint="Enter Text"/>
+        android:gravity="bottom"
+        sothree:umanoScrollableView="@+id/vpPlace"
+        sothree:umanoPanelHeight="68dp"
+        sothree:umanoParallaxOffset="100dp"
+        sothree:umanoDragView="@+id/dragView"
+        sothree:umanoOverlay="true">
 
-</RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#006df0"
+                    app:titleTextColor="@color/colorBlack"
+                    android:elevation="20dp"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="65dp"
+                    android:orientation="vertical">
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="65dp"
+                        android:paddingLeft="80dp"
+                        android:paddingRight="80dp"
+                        android:layout_gravity="center">
+
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!--</android.support.v4.widget.DrawerLayout>-->
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+
+            android:orientation="vertical"
+            android:focusable="false"
+            android:id="@+id/dragView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="48dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:background="#dddddd" />
+
+                <TextView
+                    android:layout_width="48dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="2dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:background="#dddddd" />
+
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/khmer_os_battambang"
+                    android:textStyle="bold"
+                    android:text="DAFTAR LOKASI SURVEY"
+                    android:textColor="@color/colorAccent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/pbLoad"
+                android:gravity="center"
+                android:layout_margin="15dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/vpPlace"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nvView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+  />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

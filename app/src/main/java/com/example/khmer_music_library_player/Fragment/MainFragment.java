@@ -17,10 +17,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 import com.example.khmer_music_library_player.Fragment.Tab1.MusicListFragment;
@@ -32,6 +34,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +64,8 @@ public class MainFragment extends Fragment {
     public ImageView imageView;
     public ArrayList<GetMusics> getMusicsList =new ArrayList<>();
     public MusicAdapter musicAdapter;
+    SlidingUpPanelLayout slidingUpPanelLayout;
+    CardView musicContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -120,13 +126,24 @@ public class MainFragment extends Fragment {
 
     private void initView(View view)
     {
+        slidingUpPanelLayout = view.findViewById(R.id.slideup_panel);
+        musicContainer = view.findViewById(R.id.cardviewPlayerMain);
         thisView = view;
-        adView = view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+//        adView = view.findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
         viewPager = view.findViewById(R.id.viewpager);
         tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+
+
+        musicContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            }
+        });
+//        cardView = view.findViewById(R.id.cardviewPlayer);
 
     }
 
