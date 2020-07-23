@@ -8,7 +8,8 @@
     xmlns:card_view="http://schemas.android.com/tools"
     tools:context=".Fragment.MainFragment"
     android:id="@+id/relativeLayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="90dp">
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
@@ -44,8 +45,9 @@
             card_view:cardElevation="1dp"
             card_view:cardPreventCornerOverlap="false"
             card_view:cardUseCompatPadding="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:layout_above="@id/adView">
+            android:foreground="?android:attr/selectableItemBackground">
+<!--            android:layout_above="@id/adView"-->
+
             <LinearLayout
                 android:id="@+id/linearlayout"
                 android:layout_width="match_parent"
@@ -183,12 +185,12 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </FrameLayout>
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-1dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+<!--    <com.google.android.gms.ads.AdView-->
+<!--        android:id="@+id/adView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginBottom="-1dp"-->
+<!--        ads:adSize="BANNER"-->
+<!--        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>-->
 </LinearLayout>

@@ -121,13 +121,13 @@ public class MainFragment extends Fragment {
     private void initView(View view)
     {
         thisView = view;
-        adView = view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+//        adView = view.findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
         viewPager = view.findViewById(R.id.viewpager);
         tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-        cardView = view.findViewById(R.id.cardviewPlayer);
+//        cardView = view.findViewById(R.id.cardviewPlayer);
     }
 
     public void setCustomFont() {
