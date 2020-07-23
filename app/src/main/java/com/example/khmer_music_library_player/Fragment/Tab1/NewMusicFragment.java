@@ -128,7 +128,6 @@ public class NewMusicFragment extends Fragment implements Playable {
                         public void onClickListener(GetMusics getMusics, int position) {
                           playingPosition = position;
                           initPlayer(playingPosition);
-
                           frameLayout.setVisibility(View.VISIBLE);
                         }
                     });

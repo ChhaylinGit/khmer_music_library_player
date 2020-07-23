@@ -127,7 +127,7 @@ public class MainFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewpager);
         tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-        cardView = view.findViewById(R.id.cardviewPlayer);
+
     }
 
     public void setCustomFont() {
