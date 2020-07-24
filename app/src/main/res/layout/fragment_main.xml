@@ -40,6 +40,7 @@
                 android:layout_weight="1">
             </androidx.viewpager.widget.ViewPager>
         </LinearLayout>
+
         <FrameLayout
             android:id="@+id/musicContainer"
             android:layout_width="match_parent"
@@ -48,7 +49,7 @@
         </FrameLayout>
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-    <!--    <com.google.android.gms.ads.AdView-->
+<!--        <com.google.android.gms.ads.AdView-->
 <!--        android:id="@+id/adView"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

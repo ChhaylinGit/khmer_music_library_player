@@ -1,5 +1,9 @@
 package com.example.khmer_music_library_player.Fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,16 +11,25 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.Fade;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 import androidx.viewpager.widget.ViewPager;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +37,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.khmer_music_library_player.Activity.MainActivity;
+import com.example.khmer_music_library_player.Activity.Navegation_Drawer;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 import com.example.khmer_music_library_player.Fragment.Tab1.MusicListFragment;
 import com.example.khmer_music_library_player.Fragment.Tab1.NewMusicFragment;
@@ -65,7 +80,8 @@ public class MainFragment extends Fragment {
     public ArrayList<GetMusics> getMusicsList =new ArrayList<>();
     public MusicAdapter musicAdapter;
     SlidingUpPanelLayout slidingUpPanelLayout;
-    CardView musicContainer;
+    CardView cardViewMediaPlayer;
+    LinearLayout mediaContainerWithAds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,26 +142,60 @@ public class MainFragment extends Fragment {
 
     private void initView(View view)
     {
+        adView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        cardViewMediaPlayer = view.findViewById(R.id.cardviewPlayerMain);
+        mediaContainerWithAds = view.findViewById(R.id.mediaContainerWithAds);
         slidingUpPanelLayout = view.findViewById(R.id.slideup_panel);
-        musicContainer = view.findViewById(R.id.cardviewPlayerMain);
         thisView = view;
-//        adView = view.findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        adView.loadAd(adRequest);
         viewPager = view.findViewById(R.id.viewpager);
         tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
 
-        musicContainer.setOnClickListener(new View.OnClickListener() {
+        cardViewMediaPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                musicContainer.setVisibility(View.GONE);
+//                final Toolbar toolbar = ((Navegation_Drawer)getActivity()).findViewById(R.id.toolbar);
+//                toolbar.setNavigationIcon(R.drawable.pause_96px);
+//                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//                    }
+//                });
             }
         });
-//        cardView = view.findViewById(R.id.cardviewPlayer);
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
 
+            }
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if(newState.equals(SlidingUpPanelLayout.PanelState.DRAGGING))
+                {
+                    mediaContainerWithAds.setVisibility(View.GONE);
+                }
+                if(newState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED))
+                {
+                    slideUp(mediaContainerWithAds);
+
+                }else if(newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
+                {
+                    mediaContainerWithAds.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    public void slideUp(View view){
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(0,0,view.getHeight(), 0);
+        animate.setDuration(200);
+        view.startAnimation(animate);
     }
 
     public void setCustomFont() {

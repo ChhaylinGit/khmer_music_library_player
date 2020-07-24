@@ -1,5 +1,4 @@
 package com.example.khmer_music_library_player.Fragment.Tab1;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationChannel;
@@ -8,41 +7,30 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.os.Message;
-import android.provider.SyncStateContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.jean.jcplayer.model.JcAudio;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.CreateNotification;
@@ -50,6 +38,8 @@ import com.example.khmer_music_library_player.Models.GetMusics;
 import com.example.khmer_music_library_player.Models.OnClearFromRecentService;
 import com.example.khmer_music_library_player.Models.Playable;
 import com.example.khmer_music_library_player.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -84,6 +74,9 @@ public class NewMusicFragment extends Fragment implements Playable {
     private FrameLayout frameLayout;
     SlidingUpPanelLayout slideup_panel;
     CardView cardView;
+    AdView adView;
+    LinearLayout mediaContainerWithAds;
+    ImageView img;
 
     public NewMusicFragment(Context context)
     {
@@ -124,15 +117,15 @@ public class NewMusicFragment extends Fragment implements Playable {
                         getMusicsList.add(getMusics);
                     }
                 }
-                Collections.shuffle(getMusicsList); //Random item in list
-
-                    musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
+                Collections.shuffle(getMusicsList);//Random item in list
+                musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
                           playingPosition = position;
                           initPlayer(playingPosition);
                           frameLayout.setVisibility(View.VISIBLE);
-                          slideup_panel.setPanelHeight(cardView.getHeight());
+                          slideup_panel.setPanelHeight(mediaContainerWithAds.getHeight());
+                          startRotatingImage();
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -146,13 +139,25 @@ public class NewMusicFragment extends Fragment implements Playable {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-
         });
-
     }
+
+    public void startRotatingImage() {
+
+        RotateAnimation  mRotateUpAnim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        mRotateUpAnim.setInterpolator(new LinearInterpolator());
+        mRotateUpAnim.setRepeatCount(Integer.MAX_VALUE);
+        mRotateUpAnim.setDuration(6000);
+        mRotateUpAnim.setFillAfter(true);
+        img.startAnimation(mRotateUpAnim);;
+        mRotateUpAnim.start();
+    }
+
 
     private void initMainView()
     {
+        img = ((Activity)thisContext).findViewById(R.id.mmmmmmm);
+        mediaContainerWithAds = ((Activity)thisContext).findViewById(R.id.mediaContainerWithAds);
         cardView = ((Activity)thisContext).findViewById(R.id.cardviewPlayerMain);
         slideup_panel = ((Activity)thisContext).findViewById(R.id.slideup_panel);
         frameLayout = ((Activity)thisContext).findViewById(R.id.musicContainer);
@@ -174,6 +179,9 @@ public class NewMusicFragment extends Fragment implements Playable {
 
     private void  initView(View view)
     {
+        adView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         recyclerView = view.findViewById(R.id.recyclerViewMusic);
         linearLayoutWaitLoadMusic = view.findViewById(R.id.linearlayoutWaitLoadMusic);
         recyclerView.setHasFixedSize(true);
