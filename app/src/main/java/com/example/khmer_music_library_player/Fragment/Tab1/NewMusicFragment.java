@@ -1,4 +1,5 @@
 package com.example.khmer_music_library_player.Fragment.Tab1;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationChannel;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,12 +27,15 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.CreateNotification;
@@ -77,6 +82,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     AdView adView;
     LinearLayout mediaContainerWithAds;
     ImageView imgSingerProfileMain;
+    Button btnDownload,btnTimer,btnPlayList;
 
     public NewMusicFragment(Context context)
     {
@@ -143,16 +149,14 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     }
 
     public void startRotatingImage(boolean result) {
-
         RotateAnimation  mRotateUpAnim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         mRotateUpAnim.setInterpolator(new LinearInterpolator());
-        mRotateUpAnim.setRepeatCount(Integer.MAX_VALUE);
+        mRotateUpAnim.setRepeatCount(Animation.INFINITE);
         mRotateUpAnim.setDuration(40000);
         mRotateUpAnim.setFillAfter(true);
-        imgSingerProfileMain.startAnimation(mRotateUpAnim);;
-        if(result){mRotateUpAnim.start();}else{mRotateUpAnim.cancel();}
+        imgSingerProfileMain.startAnimation(mRotateUpAnim);
+        if(!result){mRotateUpAnim.cancel();}
     }
-
 
     private void initMainView()
     {
@@ -180,6 +184,10 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         textViewSingerMain = ((Activity)thisContext).findViewById(R.id.textViewSingerMain);
         imageView = ((Activity)thisContext).findViewById(R.id.imgSingerProfile);
         progressBar = ((Activity)thisContext).findViewById(R.id.progressBarPlayer);
+        btnDownload = ((Activity)thisContext).findViewById(R.id.btnDownload);
+        btnTimer = ((Activity)thisContext).findViewById(R.id.btnTimer);
+        btnPlayList = ((Activity)thisContext).findViewById(R.id.btnPlayList);
+
     }
 
     private void  initView(View view)
@@ -199,6 +207,9 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         btnNextMain.setOnClickListener(this);
         btnPrevious.setOnClickListener(this);
         btnPreviousMain.setOnClickListener(this);
+        btnDownload.setOnClickListener(this);
+        btnTimer.setOnClickListener(this);
+        btnPlayList.setOnClickListener(this);
     }
 
     @Override
@@ -226,6 +237,10 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
             case R.id.btnPreviousMain:
                 onTrackPrevious();
                 break;
+            case R.id.btnDownload:
+                Toast.makeText(thisContext, "ttttttt", Toast.LENGTH_SHORT).show();
+
+              break;
         }
 
     }

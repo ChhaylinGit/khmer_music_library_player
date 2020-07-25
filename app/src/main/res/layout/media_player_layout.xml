@@ -161,16 +161,6 @@
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-1dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
-        android:visibility="gone">
-    </com.google.android.gms.ads.AdView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -204,6 +194,36 @@
             android:fontFamily="@font/khmer_os_battambang"
             android:textSize="12sp"
             android:text="ច្រៀងដោយ៖ ហួល ឡាវី"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
+        <Button
+            android:id="@+id/btnDownload"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_baseline_vertical_align_bottom_24"
+            android:clickable="true"
+            android:backgroundTint="@color/colorPrimary"/>
+        <Button
+            android:id="@+id/btnTimer"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_baseline_access_alarm_24"
+            android:clickable="true"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"/>
+        <Button
+            android:id="@+id/btnPlayList"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_baseline_queue_music_24"
+            android:clickable="true"
+            android:backgroundTint="@color/colorPrimary"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -283,7 +303,7 @@
            <Button
                android:layout_width="40dp"
                android:layout_height="30dp"
-               android:background="@drawable/ic_baseline_shuffle_24"
+               android:background="@drawable/ic_baseline_sync_alt_24"
                android:backgroundTint="@color/colorPrimary"
                android:layout_marginLeft="30dp"/>
        </LinearLayout>

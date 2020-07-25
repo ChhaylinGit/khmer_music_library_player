@@ -56,7 +56,6 @@ import java.util.List;
 
 public class MainFragment extends Fragment {
 
-    private AdView adView;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     public CardView cardView;
@@ -142,9 +141,6 @@ public class MainFragment extends Fragment {
 
     private void initView(View view)
     {
-        adView = view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
         cardViewMediaPlayer = view.findViewById(R.id.cardviewPlayerMain);
         mediaContainerWithAds = view.findViewById(R.id.mediaContainerWithAds);
         slidingUpPanelLayout = view.findViewById(R.id.slideup_panel);
