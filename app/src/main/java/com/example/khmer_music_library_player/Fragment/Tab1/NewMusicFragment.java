@@ -52,7 +52,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class NewMusicFragment extends Fragment implements Playable {
+public class NewMusicFragment extends Fragment implements Playable, View.OnClickListener {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -64,8 +64,8 @@ public class NewMusicFragment extends Fragment implements Playable {
     private LinearLayout linearLayoutWaitLoadMusic;
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar,seekBarMain;
-    private FloatingActionButton btnPlay,btnNext,btnPrevious;
-    private TextView textViewStartDuration,textViewStartDurationMain,textViewEndDuration,textViewEndDurationMain,textViewMusicTitle,textViewSinger;
+    private FloatingActionButton btnPlay,btnPlayMain,btnNext,btnNextMain,btnPrevious,btnPreviousMain;
+    private TextView textViewStartDuration,textViewStartDurationMain,textViewEndDuration,textViewEndDurationMain,textViewMusicTitle,textViewMusicTitleMain,textViewSinger,textViewSingerMain;
     private int playingPosition=0;
     private NotificationManager notificationManager;
     private ImageView imageView;
@@ -76,7 +76,7 @@ public class NewMusicFragment extends Fragment implements Playable {
     CardView cardView;
     AdView adView;
     LinearLayout mediaContainerWithAds;
-    ImageView img;
+    ImageView imgSingerProfileMain;
 
     public NewMusicFragment(Context context)
     {
@@ -125,7 +125,7 @@ public class NewMusicFragment extends Fragment implements Playable {
                           initPlayer(playingPosition);
                           frameLayout.setVisibility(View.VISIBLE);
                           slideup_panel.setPanelHeight(mediaContainerWithAds.getHeight());
-                          startRotatingImage();
+                          startRotatingImage(true);
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -142,21 +142,21 @@ public class NewMusicFragment extends Fragment implements Playable {
         });
     }
 
-    public void startRotatingImage() {
+    public void startRotatingImage(boolean result) {
 
         RotateAnimation  mRotateUpAnim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         mRotateUpAnim.setInterpolator(new LinearInterpolator());
         mRotateUpAnim.setRepeatCount(Integer.MAX_VALUE);
-        mRotateUpAnim.setDuration(6000);
+        mRotateUpAnim.setDuration(40000);
         mRotateUpAnim.setFillAfter(true);
-        img.startAnimation(mRotateUpAnim);;
-        mRotateUpAnim.start();
+        imgSingerProfileMain.startAnimation(mRotateUpAnim);;
+        if(result){mRotateUpAnim.start();}else{mRotateUpAnim.cancel();}
     }
 
 
     private void initMainView()
     {
-        img = ((Activity)thisContext).findViewById(R.id.mmmmmmm);
+        imgSingerProfileMain = ((Activity)thisContext).findViewById(R.id.imgSingerProfileMain);
         mediaContainerWithAds = ((Activity)thisContext).findViewById(R.id.mediaContainerWithAds);
         cardView = ((Activity)thisContext).findViewById(R.id.cardviewPlayerMain);
         slideup_panel = ((Activity)thisContext).findViewById(R.id.slideup_panel);
@@ -165,14 +165,19 @@ public class NewMusicFragment extends Fragment implements Playable {
         seekBarMain = ((Activity)thisContext).findViewById(R.id.seekBarMain);
         seekBar = ((Activity)thisContext).findViewById(R.id.seekBar);
         btnPlay = ((Activity)thisContext).findViewById(R.id.btnPlay);
+        btnPlayMain = ((Activity)thisContext).findViewById(R.id.btnPlayMain);
         btnNext = ((Activity)thisContext).findViewById(R.id.btnNext);
+        btnNextMain = ((Activity)thisContext).findViewById(R.id.btnNextMain);
         btnPrevious = ((Activity)thisContext).findViewById(R.id.btnPrevious);
+        btnPreviousMain = ((Activity)thisContext).findViewById(R.id.btnPreviousMain);
         textViewStartDuration = ((Activity)thisContext).findViewById(R.id.textViewStartDuration);
         textViewStartDurationMain = ((Activity)thisContext).findViewById(R.id.textViewStartDurationMain);
         textViewEndDuration = ((Activity)thisContext).findViewById(R.id.textViewEndDuration);
         textViewEndDurationMain = ((Activity)thisContext).findViewById(R.id.textViewEndDurationMain);
         textViewMusicTitle = ((Activity)thisContext).findViewById(R.id.textViewMusicTitle);
+        textViewMusicTitleMain = ((Activity)thisContext).findViewById(R.id.textViewMusicTitleMain);
         textViewSinger = ((Activity)thisContext).findViewById(R.id.textViewSinger);
+        textViewSingerMain = ((Activity)thisContext).findViewById(R.id.textViewSingerMain);
         imageView = ((Activity)thisContext).findViewById(R.id.imgSingerProfile);
         progressBar = ((Activity)thisContext).findViewById(R.id.progressBarPlayer);
     }
@@ -187,26 +192,42 @@ public class NewMusicFragment extends Fragment implements Playable {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mediaPlayer = new MediaPlayer();
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+        btnPlay.setOnClickListener(this);
+        btnPlayMain.setOnClickListener(this);
+        btnNext.setOnClickListener(this);
+        btnNextMain.setOnClickListener(this);
+        btnPrevious.setOnClickListener(this);
+        btnPreviousMain.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnPlay:
                 if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
                     onTrackPlay();
                 }else{onTrackPause();}
-            }
-        });
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.btnPlayMain:
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                    onTrackPlay();
+                }else{onTrackPause();}
+                break;
+            case R.id.btnNext:
                 onTrackNext();
-            }
-        });
-        btnPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.btnNextMain:
+                onTrackNext();
+                break;
+            case R.id.btnPrevious:
                 onTrackPrevious();
-            }
-        });
+                break;
+            case R.id.btnPreviousMain:
+                onTrackPrevious();
+                break;
+        }
+
     }
 
     private void createChannel() {
@@ -237,13 +258,17 @@ public class NewMusicFragment extends Fragment implements Playable {
     private void initPlayer(final int position) {
         progressBar.setVisibility(View.VISIBLE);
         btnPlay.setImageResource(R.drawable.play_96px);
+        btnPlayMain.setImageResource(R.drawable.play_96px);
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.reset();
         }
         GetMusics getMusics = getMusicsList.get(position);
         textViewMusicTitle.setText(getMusics.musicTitle);
+        textViewMusicTitleMain.setText(getMusics.musicTitle);
         textViewSinger.setText(getActivity().getResources().getString(R.string.sing_by)+" "+getMusics.singerName);
+        textViewSingerMain.setText(getActivity().getResources().getString(R.string.sing_by)+" "+getMusics.singerName);
         Picasso.get().load(getMusics.getSingerImageUrl()).placeholder(R.drawable.ic_image_black_24dp).into(imageView);
+        Picasso.get().load(getMusics.getSingerImageUrl()).placeholder(R.drawable.ic_image_black_24dp).into(imgSingerProfileMain);
         mediaPlayer.reset();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
@@ -257,6 +282,7 @@ public class NewMusicFragment extends Fragment implements Playable {
             public void onPrepared(MediaPlayer mp) {
                 progressBar.setVisibility(View.GONE);
                 btnPlay.setImageResource(R.drawable.pause_96px);
+                btnPlayMain.setImageResource(R.drawable.pause_96px);
                 String totalTime = createTimeLabel(mediaPlayer.getDuration());
                 textViewEndDuration.setText(totalTime);
                 textViewEndDurationMain.setText(totalTime);
@@ -298,12 +324,14 @@ public class NewMusicFragment extends Fragment implements Playable {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 btnPlay.setImageResource(R.drawable.play_96px);
+                btnPlayMain.setImageResource(R.drawable.play_96px);
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 btnPlay.setImageResource(R.drawable.pause_96px);
+                btnPlayMain.setImageResource(R.drawable.pause_96px);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -377,7 +405,9 @@ public class NewMusicFragment extends Fragment implements Playable {
         if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
             mediaPlayer.start();
             btnPlay.setImageResource(R.drawable.pause_96px);
+            btnPlayMain.setImageResource(R.drawable.pause_96px);
             musicAdapter.setIndex(playingPosition,true);
+            startRotatingImage(true);
         }
         CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
                 R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
@@ -389,7 +419,9 @@ public class NewMusicFragment extends Fragment implements Playable {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             btnPlay.setImageResource(R.drawable.play_96px);
+            btnPlayMain.setImageResource(R.drawable.play_96px);
             musicAdapter.setIndex(playingPosition,false);
+            startRotatingImage(false);
         }
         CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
                 R.drawable.ic_play_arrow_black_24dp, playingPosition, getMusicsList.size()-1);
@@ -416,4 +448,6 @@ public class NewMusicFragment extends Fragment implements Playable {
         }
         getActivity().unregisterReceiver(broadcastReceiver);
     }
+
+
 }

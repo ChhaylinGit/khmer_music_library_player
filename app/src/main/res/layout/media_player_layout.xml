@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorGray">
     <LinearLayout
         android:id="@+id/mediaContainerWithAds"
         android:layout_width="match_parent"
@@ -135,7 +136,7 @@
                             android:id="@+id/btnPlay"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/play_96px"/>
+                            android:src="@drawable/play_96px" />
                         <ProgressBar
                             android:id="@+id/progressBarPlayer"
                             android:layout_width="45dp"
@@ -178,7 +179,7 @@
         android:orientation="vertical"
         android:gravity="center">
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/mmmmmmm"
+            android:id="@+id/imgSingerProfileMain"
             android:layout_width="300dp"
             android:layout_height="300dp"
             app:civ_border_color="@color/colorWhite"
@@ -188,13 +189,16 @@
             app:civ_shadow_color="@color/colorPrimary"
             android:src="@drawable/one"/>
         <TextView
+            android:id="@+id/textViewMusicTitleMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="មួយរាត្រីនឹកតែអូន"
             android:fontFamily="@font/khmer_os_battambang"
             android:textColor="@color/colorBlack"
-            android:textSize="17sp"/>
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"/>
         <TextView
+            android:id="@+id/textViewSingerMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/khmer_os_battambang"
@@ -234,9 +238,17 @@
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="match_parent"
-           android:gravity="center"
-           android:orientation="horizontal">
+           android:orientation="horizontal"
+           android:gravity="center">
+           <Button
+               android:layout_width="40dp"
+               android:layout_height="30dp"
+               android:background="@drawable/ic_baseline_repeat_24"
+               android:layout_marginRight="30dp"
+               android:clickable="true"
+               android:backgroundTint="@color/colorPrimary"/>
            <com.google.android.material.floatingactionbutton.FloatingActionButton
+               android:id="@+id/btnPreviousMain"
                app:borderWidth="0dp"
                android:scaleType="fitCenter"
                android:backgroundTintMode="screen"
@@ -246,6 +258,7 @@
                android:layout_height="wrap_content"
                app:srcCompat="@drawable/previous_96"
                android:layout_marginRight="20dp"/>
+
            <com.google.android.material.floatingactionbutton.FloatingActionButton
                app:borderWidth="0dp"
                android:scaleType="fitCenter"
@@ -258,6 +271,7 @@
                android:layout_marginRight="20dp"
                android:src="@drawable/play_96px"/>
            <com.google.android.material.floatingactionbutton.FloatingActionButton
+               android:id="@+id/btnNextMain"
                app:borderWidth="0dp"
                android:scaleType="fitCenter"
                android:backgroundTintMode="screen"
@@ -266,6 +280,12 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                app:srcCompat="@drawable/next_96"/>
+           <Button
+               android:layout_width="40dp"
+               android:layout_height="30dp"
+               android:background="@drawable/ic_baseline_shuffle_24"
+               android:backgroundTint="@color/colorPrimary"
+               android:layout_marginLeft="30dp"/>
        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
