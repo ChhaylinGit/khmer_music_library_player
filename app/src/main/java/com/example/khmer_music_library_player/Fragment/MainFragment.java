@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
     public TextView textViewStartDuration,textViewEndDuration,textViewMusicTitle,textViewSinger;
     public int playingPosition=0;
     public NotificationManager notificationManager;
-    public ImageView imageView;
+    public ImageView imgSingerProfileMain;
     public ArrayList<GetMusics> getMusicsList =new ArrayList<>();
     public MusicAdapter musicAdapter;
     SlidingUpPanelLayout slidingUpPanelLayout;
@@ -141,6 +141,7 @@ public class MainFragment extends Fragment {
 
     private void initView(View view)
     {
+        imgSingerProfileMain = view.findViewById(R.id.imgSingerProfileMain);
         cardViewMediaPlayer = view.findViewById(R.id.cardviewPlayerMain);
         mediaContainerWithAds = view.findViewById(R.id.mediaContainerWithAds);
         slidingUpPanelLayout = view.findViewById(R.id.slideup_panel);
@@ -148,8 +149,6 @@ public class MainFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewpager);
         tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
-
         cardViewMediaPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,9 +177,9 @@ public class MainFragment extends Fragment {
                 if(newState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED))
                 {
                     slideUp(mediaContainerWithAds);
-
                 }else if(newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
                 {
+                    imgSingerProfileMain.setVisibility(View.VISIBLE);
                     mediaContainerWithAds.setVisibility(View.GONE);
                 }
             }

@@ -1,4 +1,6 @@
 package com.example.khmer_music_library_player.Fragment.Tab1;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -78,12 +80,13 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     private boolean isPlaying = false;
     private Context thisContext;
     private FrameLayout frameLayout;
-    SlidingUpPanelLayout slideup_panel;
-    CardView cardView;
-    AdView adView;
-    LinearLayout mediaContainerWithAds;
-    ImageView imgSingerProfileMain;
-    Button btnDownload,btnTimer,btnPlayList;
+    private SlidingUpPanelLayout slideup_panel;
+    private CardView cardView;
+    private AdView adView;
+    private LinearLayout mediaContainerWithAds;
+    private ImageView imgSingerProfileMain;
+    private Button btnDownload,btnTimer,btnPlayList;
+    private ObjectAnimator animator;
 
     public NewMusicFragment(Context context)
     {
@@ -96,7 +99,16 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         initMainView();
         initView(view);
         getMusicsList();
+        initAnimate();
         return view;
+    }
+
+    private void initAnimate()
+    {
+        animator = ObjectAnimator.ofFloat(imgSingerProfileMain, View.ROTATION, 0f, 360f);
+        animator.setDuration(40000);
+        animator.setRepeatCount(Animation.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
     }
 
     @Override
@@ -124,15 +136,15 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                         getMusicsList.add(getMusics);
                     }
                 }
-                Collections.shuffle(getMusicsList);//Random item in list
+                Collections.shuffle(getMusicsList); //Random item in list
                 musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
                           playingPosition = position;
                           initPlayer(playingPosition);
-                          frameLayout.setVisibility(View.VISIBLE);
                           slideup_panel.setPanelHeight(mediaContainerWithAds.getHeight());
-                          startRotatingImage(true);
+                          frameLayout.setVisibility(View.VISIBLE);
+                          animator.start();
                         }
                     });
                     recyclerView.setAdapter(musicAdapter);
@@ -149,15 +161,13 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         });
     }
 
-    public void startRotatingImage(boolean result) {
-        RotateAnimation  mRotateUpAnim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        mRotateUpAnim.setInterpolator(new LinearInterpolator());
-        mRotateUpAnim.setRepeatCount(Animation.INFINITE);
-        mRotateUpAnim.setDuration(40000);
-        mRotateUpAnim.setFillAfter(true);
-        imgSingerProfileMain.startAnimation(mRotateUpAnim);
-        if(!result){mRotateUpAnim.cancel();}
-    }
+    //  RotateAnimation  mRotateUpAnim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    //  mRotateUpAnim.setInterpolator(new LinearInterpolator());
+    //  mRotateUpAnim.setRepeatCount(Animation.INFINITE);
+    //  mRotateUpAnim.setDuration(40000);
+    //  mRotateUpAnim.setFillAfter(true);
+    //  imgSingerProfileMain.startAnimation(mRotateUpAnim);
+    //  if(!result){mRotateUpAnim.cancel();}
 
     private void initMainView()
     {
@@ -201,7 +211,6 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mediaPlayer = new MediaPlayer();
-
         btnPlay.setOnClickListener(this);
         btnPlayMain.setOnClickListener(this);
         btnNext.setOnClickListener(this);
@@ -212,6 +221,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         btnTimer.setOnClickListener(this);
         btnPlayList.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View view) {
@@ -241,7 +251,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
             case R.id.btnDownload:
                 Toast.makeText(thisContext, "ttttttt", Toast.LENGTH_SHORT).show();
 
-              break;
+                break;
         }
 
     }
@@ -249,7 +259,6 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     private void createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID, ConstantField.CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW);
-
             notificationManager = getActivity().getSystemService(NotificationManager.class);
             if (notificationManager != null){
                 notificationManager.createNotificationChannel(channel);
@@ -418,6 +427,24 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         recyclerView.smoothScrollToPosition(playingPosition);
     }
 
+    private void startAnimate()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (animator.isPaused()) {
+                animator.resume();
+            } else {
+                animator.start();
+
+            }}
+    }
+
+    private void pauseAnimate()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            animator.pause();
+        }
+    }
+
     @Override
     public void onTrackPlay() {
         if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
@@ -425,7 +452,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
             btnPlay.setImageResource(R.drawable.pause_96px);
             btnPlayMain.setImageResource(R.drawable.pause_96px);
             musicAdapter.setIndex(playingPosition,true);
-            startRotatingImage(true);
+            startAnimate();
         }
         CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
                 R.drawable.ic_pause_black_24dp, playingPosition, getMusicsList.size()-1);
@@ -439,7 +466,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
             btnPlay.setImageResource(R.drawable.play_96px);
             btnPlayMain.setImageResource(R.drawable.play_96px);
             musicAdapter.setIndex(playingPosition,false);
-            startRotatingImage(false);
+           pauseAnimate();
         }
         CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
                 R.drawable.ic_play_arrow_black_24dp, playingPosition, getMusicsList.size()-1);

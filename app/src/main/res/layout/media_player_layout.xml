@@ -177,7 +177,8 @@
             app:civ_shadow="true"
             app:civ_shadow_radius="10"
             app:civ_shadow_color="@color/colorPrimary"
-            android:src="@drawable/one"/>
+            android:src="@drawable/one"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/textViewMusicTitleMain"
             android:layout_width="wrap_content"
