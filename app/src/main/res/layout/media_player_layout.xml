@@ -185,7 +185,7 @@
             android:text="មួយរាត្រីនឹកតែអូន"
             android:fontFamily="@font/khmer_os_battambang"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:layout_marginTop="10dp"/>
         <TextView
             android:id="@+id/textViewSingerMain"
@@ -193,7 +193,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/khmer_os_battambang"
             android:textSize="12sp"
-            android:text="ច្រៀងដោយ៖ ហួល ឡាវី"/>
+            android:text="ច្រៀងដោយ៖ ហួល ;ឡាវី"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -203,15 +203,15 @@
         android:layout_marginBottom="10dp">
         <Button
             android:id="@+id/btnDownload"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_baseline_vertical_align_bottom_24"
             android:clickable="true"
             android:backgroundTint="@color/colorPrimary"/>
         <Button
             android:id="@+id/btnTimer"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_baseline_access_alarm_24"
             android:clickable="true"
             android:backgroundTint="@color/colorPrimary"
@@ -219,8 +219,8 @@
             android:layout_marginLeft="20dp"/>
         <Button
             android:id="@+id/btnPlayList"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_baseline_queue_music_24"
             android:clickable="true"
             android:backgroundTint="@color/colorPrimary"/>

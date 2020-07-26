@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
@@ -348,6 +349,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                 btnPlay.setImageResource(R.drawable.pause_96px);
                 btnPlayMain.setImageResource(R.drawable.pause_96px);
                 progressBar.setVisibility(View.GONE);
+
+                
             }
         });
 
