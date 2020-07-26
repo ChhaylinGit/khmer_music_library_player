@@ -180,7 +180,6 @@ public class MainFragment extends Fragment {
                 }else if(newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
                 {
                     imgSingerProfileMain.setVisibility(View.VISIBLE);
-                    mediaContainerWithAds.setVisibility(View.GONE);
                 }
             }
         });

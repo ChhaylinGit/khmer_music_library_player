@@ -68,7 +68,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicAdapter
                 }
         }else{
             holder.textViewMusicTitle.setTextColor(context.getResources().getColor(R.color.colorBlack));
-            holder.textViewSinger.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            holder.textViewSinger.setTextColor(context.getResources().getColor(R.color.black_overlay));
             holder.imageViewGif.setVisibility(View.GONE);
         }
     }

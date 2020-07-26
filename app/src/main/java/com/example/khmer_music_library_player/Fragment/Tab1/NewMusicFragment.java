@@ -282,8 +282,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
 
     private void initPlayer(final int position) {
         progressBar.setVisibility(View.VISIBLE);
-        btnPlay.setImageResource(R.drawable.play_96px);
-        btnPlayMain.setImageResource(R.drawable.play_96px);
+        btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+        btnPlayMain.setImageResource(R.drawable.ic_baseline_play_arrow_24);
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.reset();
         }
@@ -306,8 +306,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
             @Override
             public void onPrepared(MediaPlayer mp) {
                 progressBar.setVisibility(View.GONE);
-                btnPlay.setImageResource(R.drawable.pause_96px);
-                btnPlayMain.setImageResource(R.drawable.pause_96px);
+                btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
+                btnPlayMain.setImageResource(R.drawable.ic_baseline_pause_24);
                 String totalTime = createTimeLabel(mediaPlayer.getDuration());
                 textViewEndDuration.setText(totalTime);
                 textViewEndDurationMain.setText(totalTime);
@@ -348,20 +348,48 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                btnPlay.setImageResource(R.drawable.play_96px);
-                btnPlayMain.setImageResource(R.drawable.play_96px);
+                btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                btnPlayMain.setImageResource(R.drawable.ic_baseline_play_arrow_24);
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                btnPlay.setImageResource(R.drawable.pause_96px);
-                btnPlayMain.setImageResource(R.drawable.pause_96px);
+                btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
+                btnPlayMain.setImageResource(R.drawable.ic_baseline_pause_24);
                 progressBar.setVisibility(View.GONE);
 
-                
+
             }
         });
+
+        seekBarMain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mediaPlayer.seekTo(progress);
+                    seekBar.setProgress(progress);
+                    seekBarMain.setProgress(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                btnPlayMain.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
+                btnPlayMain.setImageResource(R.drawable.ic_baseline_pause_24);
+                progressBar.setVisibility(View.GONE);
+
+
+            }
+        });
+
 
         new Thread(new Runnable() {
             @Override
@@ -449,8 +477,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     public void onTrackPlay() {
         if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
             mediaPlayer.start();
-            btnPlay.setImageResource(R.drawable.pause_96px);
-            btnPlayMain.setImageResource(R.drawable.pause_96px);
+            btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
+            btnPlayMain.setImageResource(R.drawable.ic_baseline_pause_24);
             musicAdapter.setIndex(playingPosition,true);
             startAnimate();
         }
@@ -463,8 +491,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     public void onTrackPause() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
-            btnPlay.setImageResource(R.drawable.play_96px);
-            btnPlayMain.setImageResource(R.drawable.play_96px);
+            btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            btnPlayMain.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             musicAdapter.setIndex(playingPosition,false);
            pauseAnimate();
         }
