@@ -24,8 +24,5 @@
             android:theme="@style/ToolbarTheme"/>
 
     </com.google.android.material.appbar.AppBarLayout>
-
     <include layout="@layout/content_navegation__drawer"/>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

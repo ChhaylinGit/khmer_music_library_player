@@ -1,6 +1,5 @@
 package com.example.khmer_music_library_player.Fragment.Tab1;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,9 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -38,7 +34,6 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
 import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.CreateNotification;
@@ -87,6 +82,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     private ImageView imgSingerProfileMain;
     private Button btnDownload,btnTimer,btnPlayList;
     private ObjectAnimator animator;
+    private LinearLayout linearlayoutImage;
 
     public NewMusicFragment(Context context)
     {
@@ -198,7 +194,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         btnDownload = ((Activity)thisContext).findViewById(R.id.btnDownload);
         btnTimer = ((Activity)thisContext).findViewById(R.id.btnTimer);
         btnPlayList = ((Activity)thisContext).findViewById(R.id.btnPlayList);
-
+        linearlayoutImage = ((Activity)thisContext).findViewById(R.id.linearlayoutImage);
     }
 
     private void  initView(View view)
@@ -221,7 +217,6 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         btnTimer.setOnClickListener(this);
         btnPlayList.setOnClickListener(this);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -250,7 +245,6 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                 break;
             case R.id.btnDownload:
                 Toast.makeText(thisContext, "ttttttt", Toast.LENGTH_SHORT).show();
-
                 break;
         }
 
@@ -316,7 +310,6 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                 mediaPlayer.start();
                 musicAdapter.setIndex(position,true);
                 CreateNotification.createNotification(getActivity(),getMusicsList.get(position),R.drawable.ic_pause_black_24dp, position, getMusicsList.size()-1);
-
             }
         });
 
@@ -358,8 +351,6 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                 btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
                 btnPlayMain.setImageResource(R.drawable.ic_baseline_pause_24);
                 progressBar.setVisibility(View.GONE);
-
-
             }
         });
 
@@ -385,11 +376,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                 btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
                 btnPlayMain.setImageResource(R.drawable.ic_baseline_pause_24);
                 progressBar.setVisibility(View.GONE);
-
-
             }
         });
-
 
         new Thread(new Runnable() {
             @Override
@@ -462,7 +450,6 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                 animator.resume();
             } else {
                 animator.start();
-
             }}
     }
 
@@ -496,8 +483,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
             musicAdapter.setIndex(playingPosition,false);
            pauseAnimate();
         }
-        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),
-                R.drawable.ic_play_arrow_black_24dp, playingPosition, getMusicsList.size()-1);
+        CreateNotification.createNotification(getActivity(), getMusicsList.get(playingPosition),R.drawable.ic_play_arrow_black_24dp, playingPosition, getMusicsList.size()-1);
         isPlaying = false;
     }
 
