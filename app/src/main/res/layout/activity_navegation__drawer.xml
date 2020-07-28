@@ -9,7 +9,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
-
 <!--    <com.sothree.slidinguppanel.SlidingUpPanelLayout-->
 <!--        android:id="@+id/suplSurveys"-->
 <!--        android:layout_width="match_parent"-->
@@ -33,7 +32,6 @@
 <!--            android:background="@color/colorWhite">-->
 <!--            <include layout="@layout/media_player_layout"/>-->
 <!--        </FrameLayout>-->
-
 <!--    </com.sothree.slidinguppanel.SlidingUpPanelLayout>-->
 
     <com.google.android.material.navigation.NavigationView

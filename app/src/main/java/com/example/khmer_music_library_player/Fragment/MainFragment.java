@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -177,9 +178,11 @@ public class MainFragment extends Fragment {
                 if(newState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED))
                 {
                     slideUp(mediaContainerWithAds);
-                }else if(newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
+                }
+                else if(newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
                 {
                     imgSingerProfileMain.setVisibility(View.VISIBLE);
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 }
             }
         });
