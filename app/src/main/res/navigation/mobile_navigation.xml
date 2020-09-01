@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_main_fragment"
-        android:name="com.example.khmer_music_library_player.Fragment.MainFragment"
+        android:name="com.example.khmer_music_library_player.Fragment.Tab1.NewMusicFragment"
         android:label="@string/title_activity_navegation__drawer"
-        tools:layout="@layout/fragment_main">
+        tools:layout="@layout/fragment_new_music">
 
 <!--        <action-->
 <!--            android:id="@+id/action_HomeFragment_to_HomeSecondFragment"-->

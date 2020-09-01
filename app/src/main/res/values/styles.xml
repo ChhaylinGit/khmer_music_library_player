@@ -77,4 +77,10 @@
         <item name="android:minHeight">48dp</item>
     </style>
 
+    <style name="NumberPickerText">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/khmer_os_battambang</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

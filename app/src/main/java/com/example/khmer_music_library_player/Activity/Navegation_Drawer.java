@@ -8,10 +8,15 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.Menu;
 import android.view.WindowManager;
+import android.widget.Toast;
+
 
 import com.example.khmer_music_library_player.Models.CustomTypefaceSpan;
 import com.example.khmer_music_library_player.R;
 import com.google.android.material.navigation.NavigationView;
+
+
+import androidx.appcompat.widget.SearchView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -37,6 +42,29 @@ public class Navegation_Drawer extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.searchview,menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint(getResources().getString(R.string.query_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(Navegation_Drawer.this, "Focus", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Toast.makeText(Navegation_Drawer.this, newText, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

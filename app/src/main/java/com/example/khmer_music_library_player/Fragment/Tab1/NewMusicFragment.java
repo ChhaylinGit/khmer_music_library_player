@@ -3,9 +3,13 @@ package com.example.khmer_music_library_player.Fragment.Tab1;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.TimePickerDialog;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,19 +31,24 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import com.example.khmer_music_library_player.Adapter.MusicAdapter;
+import com.example.khmer_music_library_player.Dialog.MyTimePickerDialog;
 import com.example.khmer_music_library_player.Models.ConstantField;
 import com.example.khmer_music_library_player.Models.CreateNotification;
+import com.example.khmer_music_library_player.Models.DeviceAdmin;
 import com.example.khmer_music_library_player.Models.GetMusics;
 import com.example.khmer_music_library_player.Models.OnClearFromRecentService;
 import com.example.khmer_music_library_player.Models.Playable;
+import com.example.khmer_music_library_player.Models.SimpleCountDownTimer;
 import com.example.khmer_music_library_player.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -53,9 +62,10 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
-public class NewMusicFragment extends Fragment implements Playable, View.OnClickListener {
+public class NewMusicFragment extends Fragment implements Playable, View.OnClickListener,SimpleCountDownTimer.OnCountDownListener {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -68,7 +78,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar,seekBarMain;
     private FloatingActionButton btnPlay,btnPlayMain,btnNext,btnNextMain,btnPrevious,btnPreviousMain;
-    private TextView textViewStartDuration,textViewStartDurationMain,textViewEndDuration,textViewEndDurationMain,textViewMusicTitle,textViewMusicTitleMain,textViewSinger,textViewSingerMain;
+    private TextView textViewStartDuration,textViewStartDurationMain,textViewEndDuration,textViewEndDurationMain,textViewMusicTitle,textViewMusicTitleMain,textViewSinger,textViewSingerMain,textViewTimer;
     private int playingPosition=0;
     private NotificationManager notificationManager;
     private ImageView imageView;
@@ -92,8 +102,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_music, container, false);
-        initMainView();
         initView(view);
+        initMainView();
         getMusicsList();
         initAnimate();
         return view;
@@ -133,7 +143,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
                     }
                 }
                 Collections.shuffle(getMusicsList); //Random item in list
-                musicAdapter = new MusicAdapter(getActivity(), getMusicsList, new MusicAdapter.RecyclerItemClickListener() {
+                musicAdapter = new MusicAdapter(getActivity(), getMusicsList,new MusicAdapter.RecyclerItemClickListener() {
                         @Override
                         public void onClickListener(GetMusics getMusics, int position) {
                           playingPosition = position;
@@ -189,6 +199,7 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         textViewMusicTitleMain = ((Activity)thisContext).findViewById(R.id.textViewMusicTitleMain);
         textViewSinger = ((Activity)thisContext).findViewById(R.id.textViewSinger);
         textViewSingerMain = ((Activity)thisContext).findViewById(R.id.textViewSingerMain);
+        textViewTimer = ((Activity)thisContext).findViewById(R.id.textViewTimer);
         imageView = ((Activity)thisContext).findViewById(R.id.imgSingerProfile);
         progressBar = ((Activity)thisContext).findViewById(R.id.progressBarPlayer);
         btnDownload = ((Activity)thisContext).findViewById(R.id.btnDownload);
@@ -196,6 +207,8 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
         btnPlayList = ((Activity)thisContext).findViewById(R.id.btnPlayList);
         linearlayoutImage = ((Activity)thisContext).findViewById(R.id.linearlayoutImage);
     }
+
+    static final int RESULT_ENABLE = 1 ;
 
     private void  initView(View view)
     {
@@ -246,8 +259,25 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
             case R.id.btnDownload:
                 Toast.makeText(thisContext, "ttttttt", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.btnTimer:
+                MyTimePickerDialog dialog = new MyTimePickerDialog();
+                dialog.show(getActivity().getSupportFragmentManager(),"MyTimePickerDialog");
+                dialog.setListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        startTimer(i);
+                    }
+                });
+                break;
         }
 
+    }
+
+    private void startTimer(int minute)
+    {
+        SimpleCountDownTimer simpleCountDownTimer = new SimpleCountDownTimer(minute, 0, 1,this);
+        simpleCountDownTimer.start(true);
+        simpleCountDownTimer.runOnBackgroundThread();
     }
 
     private void createChannel() {
@@ -509,4 +539,16 @@ public class NewMusicFragment extends Fragment implements Playable, View.OnClick
     }
 
 
+    @Override
+    public void onCountDownActive(String time) {
+        textViewTimer.post(() -> textViewTimer.setText(time));
+    }
+
+    @Override
+    public void onCountDownFinished() {
+        textViewTimer.post(() -> {
+            onTrackPause();
+            getActivity().finish();
+        });
+    }
 }

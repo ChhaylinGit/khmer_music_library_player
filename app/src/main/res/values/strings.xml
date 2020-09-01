@@ -28,7 +28,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- TODO: Bottom Navegation Text -->
-    <string name="music">ចំរៀង</string>
+    <string name="music">ចំរៀងឆ្លាស់</string>
     <string name="singer">អ្នកចំរៀង</string>
     <string name="music_list">បញ្ចីចំរៀង</string>
     <string name="download">ទាញយក</string>
@@ -46,7 +46,78 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <!-- App name -->
+    <!-- TODO: Query Hint -->
+    <string name="query_hint">ស្វែងរកបទចំរៀង...</string>
 
+
+    <!-- Buton -->
+    <string name="agree">យល់ព្រម</string>
+    <string name="disagree">បោះបង់</string>
+    <string name="close_timer"></string>
+
+    <string-array name="array_minutes">
+        <item>1 នាទី</item>
+        <item>2 នាទី</item>
+        <item>3 នាទី</item>
+        <item>4 នាទី</item>
+        <item>5 នាទី</item>
+        <item>6 នាទី</item>
+        <item>7 នាទី</item>
+        <item>8 នាទី</item>
+        <item>9 នាទី</item>
+        <item>10 នាទី</item>
+        <item>11 នាទី</item>
+        <item>12 នាទី</item>
+        <item>13 នាទី</item>
+        <item>14 នាទី</item>
+        <item>15 នាទី</item>
+        <item>16 នាទី</item>
+        <item>17 នាទី</item>
+        <item>18 នាទី</item>
+        <item>19 នាទី</item>
+        <item>20 នាទី</item>
+        <item>21 នាទី</item>
+        <item>22 នាទី</item>
+        <item>23 នាទី</item>
+        <item>24 នាទី</item>
+        <item>25 នាទី</item>
+        <item>26 នាទី</item>
+        <item>27 នាទី</item>
+        <item>28 នាទី</item>
+        <item>29 នាទី</item>
+        <item>30 នាទី</item>
+        <item>31 នាទី</item>
+        <item>32 នាទី</item>
+        <item>33 នាទី</item>
+        <item>34 នាទី</item>
+        <item>35 នាទី</item>
+        <item>36 នាទី</item>
+        <item>37 នាទី</item>
+        <item>38 នាទី</item>
+        <item>39 នាទី</item>
+        <item>40 នាទី</item>
+        <item>41 នាទី</item>
+        <item>42 នាទី</item>
+        <item>43 នាទី</item>
+        <item>44 នាទី</item>
+        <item>45 នាទី</item>
+        <item>46 នាទី</item>
+        <item>47 នាទី</item>
+        <item>48 នាទី</item>
+        <item>49 នាទី</item>
+        <item>50 នាទី</item>
+        <item>51 នាទី</item>
+        <item>52 នាទី</item>
+        <item>53 នាទី</item>
+        <item>54 នាទី</item>
+        <item>55 នាទី</item>
+        <item>56 នាទី</item>
+        <item>57 នាទី</item>
+        <item>58 នាទី</item>
+        <item>59 នាទី</item>
+        <item>60 នាទី</item>
+    </string-array>
+
+    <string name="auto_close_app">រយៈពេលបិតកម្មវិធីស្វ័យប្រវត្ត</string>
 
 </resources>
